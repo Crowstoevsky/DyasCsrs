@@ -49,11 +49,14 @@ namespace DyasCsrs.Controllers.Gerente
         {
 
 
-            var metodoExistente = await _appDbcontext.MetodosPago.FindAsync(model.MetodoPagoId);
-            if (metodoExistente == null)
+            var proveedorExistente = await _appDbcontext.Proveedores.FindAsync(model.ProveedorId);
+            if (proveedorExistente == null)
                 return RedirectToAction(nameof(Index));
 
-            metodoExistente.Nombre = model.MetodoPago.Nombre;
+            proveedorExistente.Nombre = model.Proveedor.Nombre;
+            proveedorExistente.Telefono = model.Proveedor.Telefono;
+            proveedorExistente.Email = model.Proveedor.Email;
+
 
             await _appDbcontext.SaveChangesAsync();
 
@@ -61,12 +64,12 @@ namespace DyasCsrs.Controllers.Gerente
         }
 
         [HttpPost]
-        public async Task<IActionResult> Eliminar(int idMetodoPago)
+        public async Task<IActionResult> Eliminar(int idProveedor)
         {
-            var metodoPago = await _appDbcontext.MetodosPago.FindAsync(idMetodoPago);
-            if (metodoPago != null)
+            var proveedor = await _appDbcontext.Proveedores.FindAsync(idProveedor);
+            if (proveedor != null)
             {
-                _appDbcontext.MetodosPago.Remove(metodoPago);
+                _appDbcontext.Proveedores.Remove(proveedor);
                 await _appDbcontext.SaveChangesAsync();
             }
 
