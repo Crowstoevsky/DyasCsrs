@@ -1,0 +1,114 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_LyGerente.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Panel de Estadísticas</h2>
+
+    <!-- Tarjetas resumen -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Total Empleados</h5>
+                    <p class="card-text fs-4">@ViewBag.TotalEmpleados</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Ventas del Mes</h5>
+                    <p class="card-text fs-4">@ViewBag.VentasMes.ToString("C")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Devoluciones</h5>
+                    <p class="card-text fs-4">@ViewBag.TotalDevoluciones</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficas -->
+    <div class="row mt-4">
+        <!-- Ventas por Mes -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light fw-semibold">Ventas por Mes</div>
+                <div class="card-body">
+                    <canvas id="ventasChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Productos más Vendidos -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light fw-semibold">Productos más Vendidos</div>
+                <div class="card-body">
+                    <canvas id="productosChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Gráfico de Ventas por Mes
+        const ventasCtx = document.getElementById('ventasChart').getContext('2d');
+        new Chart(ventasCtx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.Meses)),
+                datasets: [{
+                    label: 'Ventas',
+                    data: @Html.Raw(Json.Serialize(ViewBag.VentasPorMes)),
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true }
+                }
+            }
+        });
+
+        // Gráfico de Productos más Vendidos
+        const productosCtx = document.getElementById('productosChart').getContext('2d');
+        new Chart(productosCtx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.ProductosTop)),
+                datasets: [{
+                    label: 'Cantidad Vendida',
+                    data: @Html.Raw(Json.Serialize(ViewBag.CantidadesVendidas)),
+                    backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}

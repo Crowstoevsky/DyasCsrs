@@ -1,0 +1,146 @@
+﻿@model DyasCsrs.ViewModels.EmpleadoCrudVM
+
+@{
+    Layout = "~/Views/Shared/_LyAdmin.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Gestión de Empleados</h2>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addEmpleadoModal">Agregar</button>
+
+    <table >
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var empleado in Model.Empleados)
+            {
+                <tr>
+                    <td>@empleado.Nombre</td>
+                    <td>@empleado.Email</td>
+                    <td>@empleado.Telefono</td>
+                    <td>@empleado.Rol?.Nombre</td>
+                    <td>
+                        <button class="btn btn-yellow btn-sm" data-bs-toggle="modal" data-bs-target="#editModal_@empleado.Id">Editar</button>
+                        <button class="btn btn-red btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal_@empleado.Id">Eliminar</button>
+                    </td>
+                </tr>
+
+                <!-- Modal Editar -->
+                <div class="modal fade" id="editModal_@empleado.Id" tabindex="-1">
+                    <div class="modal-dialog">
+                        <form asp-action="Editar" method="post">
+                            <input type="hidden" asp-for="EmpleadoId" value="@empleado.Id" />
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Editar Empleado</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control" asp-for="Empleado.Nombre" value="@empleado.Nombre" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Email</label>
+                                        <input type="email" class="form-control" asp-for="Empleado.Email" value="@empleado.Email" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Teléfono</label>
+                                        <input type="text" class="form-control" asp-for="Empleado.Telefono" value="@empleado.Telefono" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Password</label>
+                                        <input type="password" class="form-control" asp-for="Empleado.Password" value="@empleado.Password" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Rol</label>
+                                        <select class="form-select" asp-for="Empleado.RolId" asp-items="@(new SelectList(Model.Roles, "Id", "Nombre"))">
+                                            <option value=""> Selecciona un Rol</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+                <!-- Modal Eliminar -->
+                <div class="modal fade" id="deleteModal_@empleado.Id" tabindex="-1">
+                    <div class="modal-dialog">
+                        <form asp-action="Eliminar" method="post">
+                            <input type="hidden" name="idEmpleado" value="@empleado.Id" />
+
+                            <div class="modal-content">
+                                <div class="modal-header bg-danger text-white">
+                                    <h5 class="modal-title">Eliminar Empleado</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ¿Estás seguro de que deseas eliminar al empleado <strong>@empleado.Nombre</strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal Agregar Empleado -->
+<div class="modal fade" id="addEmpleadoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <form asp-controller="Empleados" asp-action="Agregar" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Empleado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-control" asp-for="Empleado.Nombre" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" asp-for="Empleado.Email" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Telefono</label>
+                        <input type="text" class="form-control" asp-for="Empleado.Telefono" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" asp-for="Empleado.Password" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Rol</label>
+                        <select class="form-select" asp-for="Empleado.RolId" asp-items="@(new SelectList(Model.Roles, "Id", "Nombre"))">
+                            <option value="">Seleccione un rol</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Agregar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

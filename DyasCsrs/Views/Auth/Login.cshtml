@@ -1,0 +1,18 @@
+﻿@model DyasCsrs.Models.Empleado
+@{
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+<div class="login-container">
+    <h2 class="heading-center">Iniciar Sesión</h2>
+    <form asp-controller="Auth" asp-action="Login" method="post">
+        <input class="form-control input-dark" type="text" placeholder="Correo electrónico" asp-for="Email" required />
+        <input class="form-control input-dark" type="password" placeholder="Contraseña" asp-for="Password" required />
+        <button class="btn-green">Entrar</button>
+
+        @if (ViewData["Mensaje"] != null)
+        {
+            <div class="alert alert-danger alert-rounded">@ViewData["Mensaje"]</div>
+        }
+    </form>
+</div>

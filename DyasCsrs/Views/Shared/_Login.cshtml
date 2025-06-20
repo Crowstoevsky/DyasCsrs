@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DyasCsrs.styles.css" asp-append-version="true" />
+</head>
+<body class="login-page">
+
+    <div class="login-wrapper">
+
+        <!-- Aside izquierdo: imagen + logo -->
+        <aside class="login-image">
+            <div class="login-gradient"></div>
+            <div class="login-logo">
+                <img src="/img/logo.png" alt="Logo" />
+            </div>
+        </aside>
+
+        <!-- Aside derecho: login -->
+        <aside class="login-aside">
+            @RenderBody()
+        </aside>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,88 @@
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Panel</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DyasCsrs.styles.css" asp-append-version="true" />
+    <style>
+        
+    </style>
+</head>
+<body>
+    <!-- Botón toggle solo visible en móviles -->
+    <button class="btn btn-secondary d-md-none m-2" id="menu-toggle">
+        ☰
+    </button>
+
+    <div class="d-flex flex-column flex-md-row" style="min-height: 100vh;">
+        <!-- ASIDE -->
+        <aside class="layout-aside d-md-block" id="sidebar">
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a class="nav-link mb-2 bg-red"
+                       asp-controller="Auth" asp-action="Logout">
+                        <img src="~/img/icono-logout.png" alt="Cerrar Sesión" />
+                        Cerrar Sesión
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(currentController == "Admin" ? "active" : "")"
+                       asp-controller="Admin" asp-action="Dashboard">
+                        <img src="~/img/icono-dashboard.png" alt="Dashboard" />
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(currentController == "Empleados" ? "active" : "")"
+                       asp-controller="Empleados" asp-action="Index">
+                        <img src="~/img/icono-empleados.png" alt="Empleados" />
+                        Empleados
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(currentController == "Roles" ? "active" : "")"
+                       asp-controller="Roles" asp-action="Index">
+                        <img src="~/img/icono-rol.png" alt="Roles" />
+                        Roles
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(currentController == "MetodosPago" ? "active" : "")"
+                       asp-controller="MetodosPago" asp-action="Index">
+                        <img src="~/img/icono-metodo-pago.png" alt="Métodos de Pago" />
+                        Métodos de Pago
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="layout-main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        // Toggle para móviles
+        const toggleBtn = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+
+        toggleBtn?.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

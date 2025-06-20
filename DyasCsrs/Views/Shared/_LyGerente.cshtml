@@ -1,0 +1,99 @@
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Panel</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DyasCsrs.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <!-- Botón hamburguesa visible solo en móviles -->
+    <button id="menu-toggle" class="btn btn-secondary d-md-none">
+        ☰
+    </button>
+
+    <div class="layout-container">
+        <!-- Sidebar -->
+        <aside class="layout-aside d-md-block" id="sidebar">
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a class="nav-link bg-red"
+                       asp-controller="Auth" asp-action="Logout">
+                        <img src="~/img/icono-logout.png" alt="Cerrar Sesión" />
+                        Cerrar Sesión
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(currentController == "Gerente" ? "active" : "")"
+                       asp-controller="Gerente" asp-action="Dashboard">
+                        <img src="~/img/icono-dashboard.png" alt="Dashboard" />
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(currentController == "Productos" ? "active" : "")"
+                       asp-controller="Productos" asp-action="Index">
+                        <img src="~/img/icono-motos.png" alt="Productos" />
+                        Productos
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(currentController == "Stock" ? "active" : "")"
+                       asp-controller="Stock" asp-action="Index">
+                        <img src="~/img/icono-stock.png" alt="Stock" />
+                        Stock
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(currentController == "Proovedores" ? "active" : "")"
+                       asp-controller="Proovedores" asp-action="Index">
+                        <img src="~/img/icono-proveedores.png" alt="Proveedores" />
+                        Proveedores
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(currentController == "Sucursales" ? "active" : "")"
+                       asp-controller="Sucursales" asp-action="Index">
+                        <img src="~/img/icono-sucursales.png" alt="Sucursales" />
+                        Sucursales
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(currentController == "MetodosPago" ? "active" : "")"
+                       asp-controller="MetodosPago" asp-action="Index">
+                        <img src="~/img/icono-metodo-pago.png" alt="Métodos de Pago" />
+                        Devoluciones
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main -->
+        <main class="layout-main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        // Mostrar/ocultar sidebar en móvil
+        const toggleBtn = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+
+        toggleBtn?.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
