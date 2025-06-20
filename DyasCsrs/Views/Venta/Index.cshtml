@@ -1,0 +1,134 @@
+﻿@* @model DyasCsrs.ViewModels.VentaVM
+
+@{
+    Layout = "~/Views/Shared/_LyVendedor.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Registrar Nueva Venta</h2>
+    <form asp-action="RegistrarVenta" method="post">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label>DNI del Cliente</label>
+                <input type="text" name="DNICliente" class="form-control" required maxlength="8" />
+            </div>
+            <div class="col-md-4">
+                <label>Método de Pago</label>
+                <select class="form-select" name="MetodoPagoId">
+                    @foreach (var metodo in Model.MetodosPago)
+                    {
+                        <option value="@metodo.Id">@metodo.Nombre</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <h5>Productos</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Modelo</th>
+                            <th>Cantidad</th>
+                            <th>Sucursal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="productosSeleccionados">
+                        <!-- Dinámicamente agregar filas con JS -->
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-secondary" onclick="agregarProducto()">Agregar Producto</button>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label>Total:</label>
+            <span id="totalVenta">S/ 0.00</span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Registrar Venta</button>
+    </form>
+</div>
+
+<hr />
+
+<div class="container mt-4">
+    <h2>Historial de Ventas Realizadas</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Total</th>
+                <th>Método de Pago</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var venta in Model.HistorialVentas)
+            {
+                <tr>
+                    <td>@venta.Id</td>
+                    <td>@venta.Fecha.ToString("dd/MM/yyyy")</td>
+                    <td>@venta.Cliente.Nombre</td>
+                    <td>S/ @venta.Total</td>
+                    <td>@venta.MetodoPago.Nombre</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        let productos = @Html.Raw(Json.Serialize(Model.ProductosMotos));
+        let sucursales = @Html.Raw(Json.Serialize(Model.Sucursales));
+        let total = 0;
+
+        function agregarProducto() {
+            const index = document.querySelectorAll('#productosSeleccionados tr').length;
+            let fila = `
+                <tr>
+                    <td>
+                        <select class="form-select" name="Productos[${index}].ProductoMotoId" onchange="actualizarPrecio(${index})">
+                            ${productos.map(p => `<option value="${p.id}" data-precio="${p.precio}">${p.modelo}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" name="Productos[${index}].Cantidad" class="form-control" min="1" value="1" onchange="actualizarPrecio(${index})" />
+                    </td>
+                    <td>
+                        <select class="form-select" name="Productos[${index}].SucursalId">
+                            ${sucursales.map(s => `<option value="${s.id}">${s.nombre}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td class="subtotal">S/ 0.00</td>
+                </tr>
+            `;
+            document.querySelector('#productosSeleccionados').insertAdjacentHTML('beforeend', fila);
+            actualizarPrecio(index);
+        }
+
+        function actualizarPrecio(index) {
+            const fila = document.querySelectorAll('#productosSeleccionados tr')[index];
+            const select = fila.querySelector('select');
+            const cantidadInput = fila.querySelector('input');
+            const precio = parseFloat(select.options[select.selectedIndex].dataset.precio);
+            const cantidad = parseInt(cantidadInput.value);
+            const subtotal = (precio * cantidad).toFixed(2);
+            fila.querySelector('.subtotal').innerText = `S/ ${subtotal}`;
+
+            // actualizar total
+            let nuevosTotales = document.querySelectorAll('.subtotal');
+            let suma = 0;
+            nuevosTotales.forEach(el => {
+                suma += parseFloat(el.innerText.replace('S/', ''));
+            });
+            total = suma.toFixed(2);
+            document.getElementById('totalVenta').innerText = `S/ ${total}`;
+        }
+    </script>
+}
+ *@

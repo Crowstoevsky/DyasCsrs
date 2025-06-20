@@ -1,0 +1,107 @@
+﻿@model DyasCsrs.ViewModels.PanelDevolucionesVM
+
+@{
+    Layout = "~/Views/Shared/_LyGerente.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Solicitudes de Devolución</h2>
+
+    @if (!Model.DevolucionesPendientes.Any())
+    {
+        <div class="alert alert-info mt-4">No hay devoluciones pendientes.</div>
+    }
+    else
+    {
+        <div class="d-flex flex-wrap gap-3 mb-5">
+            @foreach (var devolucion in Model.DevolucionesPendientes)
+            {
+                <div class="card shadow-sm" style="width: 300px; flex: 1 1 300px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Devolución #@devolucion.Id</h5>
+                        <p><strong>Motivo:</strong> @devolucion.Motivo</p>
+                        <p><strong>Fecha solicitud:</strong> @devolucion.FechaSolicitud.ToString("dd/MM/yyyy")</p>
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_@devolucion.Id">
+                            Atender devolución
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="modal_@devolucion.Id" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Devolución #@devolucion.Id</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Cliente:</strong> @devolucion.Venta.Cliente.Nombre</p>
+                                <p><strong>Motivo:</strong> @devolucion.Motivo</p>
+                                <p><strong>Total:</strong> S/ @devolucion.Venta.Total</p>
+
+                                <h6>Productos comprados:</h6>
+                                <ul class="list-group mb-3">
+                                    @foreach (var detalle in devolucion.Venta.Detalles)
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>@detalle.ProductoMoto.Marca @detalle.ProductoMoto.Modelo</span>
+                                            <span class="badge bg-secondary">x@detalle.Cantidad</span>
+                                            <span>S/ @detalle.SubTotal</span>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <form asp-action="Aprobar" method="post" class="me-2">
+                                    <input type="hidden" name="id" value="@devolucion.Id" />
+                                    <button class="btn btn-success" type="submit">Aprobar</button>
+                                </form>
+                                <form asp-action="Rechazar" method="post" class="me-2">
+                                    <input type="hidden" name="id" value="@devolucion.Id" />
+                                    <button class="btn btn-danger" type="submit">Rechazar</button>
+                                </form>
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <h3 class="mt-5">Historial de Devoluciones Atendidas</h3>
+
+    @if (!Model.HistorialDevoluciones.Any())
+    {
+        <div class="alert alert-secondary mt-3">Aún no hay historial de devoluciones.</div>
+    }
+    else
+    {
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Fecha</th>
+                    <th>Motivo</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var devolucion in Model.HistorialDevoluciones)
+                {
+                    <tr>
+                        <td>@devolucion.Id</td>
+                        <td>@devolucion.Venta.Cliente.Nombre</td>
+                        <td>@devolucion.FechaSolicitud.ToString("dd/MM/yyyy")</td>
+                        <td>@devolucion.Motivo</td>
+                        <td>S/ @devolucion.Venta.Total</td>
+                        <td>@devolucion.EstadoDevolucion.Nombre</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

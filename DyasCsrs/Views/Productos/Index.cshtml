@@ -1,0 +1,187 @@
+﻿@model DyasCsrs.ViewModels.ProductoMotoCrudVM
+
+@{
+    Layout = "~/Views/Shared/_LyGerente.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Gestión de Productos</h2>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addModal">Agregar</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Estado</th>
+                <th>Modelo</th>
+                <th>Marca</th>
+                <th>CC</th>
+                <th>Año</th>
+                <th>Color</th>
+                <th>Precio</th>
+                <th>Proveedor</th>
+                <th>Acciones</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var moto in Model.ProductosMotos)
+            {
+                <tr>
+                    <td>@moto.EstadoProductoMoto.Nombre</td>
+                    <td>@moto.Modelo</td>
+                    <td>@moto.Marca</td>
+                    <td>@moto.CC</td>
+                    <td>@moto.Anio</td>
+                    <td>@moto.Color</td>
+                    <td>@moto.Precio</td>
+                    <td>@moto.Proveedor.Nombre</td>
+
+                    <td>
+                        <button class="btn btn-yellow btn-sm" data-bs-toggle="modal" data-bs-target="#editModal_@moto.Id">Editar</button>
+                        <button class="btn btn-red btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal_@moto.Id">Eliminar</button>
+                    </td>
+                </tr>
+
+                <!-- Modal Editar -->
+                <div class="modal fade" id="editModal_@moto.Id" tabindex="-1">
+                    <div class="modal-dialog">
+                        <form asp-action="Editar" method="post">
+                            <input type="hidden" asp-for="ProductoMotoId" value="@moto.Id" />
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Editar Producto Moto</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label>Estado</label>
+                                        <select class="form-select" asp-for="ProductoMoto.EstadoPMId" asp-items="@(new SelectList(Model.EstadosProductoMotos, "Id", "Nombre"))">
+                                            <option value=""> Selecciona un Estado</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Modelo</label>
+                                        <input type="text" class="form-control" asp-for="ProductoMoto.Modelo" value="@moto.Modelo" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Marca</label>
+                                        <input type="text" class="form-control" asp-for="ProductoMoto.Marca" value="@moto.Marca" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>CC</label>
+                                        <input type="text" class="form-control" asp-for="ProductoMoto.CC" value="@moto.CC" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Año</label>
+                                        <input type="text" class="form-control" asp-for="ProductoMoto.Anio" value="@moto.Anio" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Color</label>
+                                        <input type="text" class="form-control" asp-for="ProductoMoto.Color" value="@moto.Color" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Precio</label>
+                                        <input type="number" class="form-control" asp-for="ProductoMoto.Precio" value="@moto.Precio" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Proveedor</label>
+                                        <select class="form-select" asp-for="ProductoMoto.ProveedorId" asp-items="@(new SelectList(Model.Proveedores, "Id", "Nombre"))">
+                                            <option value=""> Selecciona un Proveedor</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+                <!-- Modal Eliminar -->
+                <div class="modal fade" id="deleteModal_@moto.Id" tabindex="-1">
+                    <div class="modal-dialog">
+                        <form asp-action="Eliminar" method="post">
+                            <input type="hidden" name="idProductoMoto" value="@moto.Id" />
+
+                            <div class="modal-content">
+                                <div class="modal-header bg-danger text-white">
+                                    <h5 class="modal-title">Eliminar Sucursal</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ¿Estás seguro de que deseas eliminar al producto <strong>@moto.Modelo</strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal Agregar Empleado -->
+<div class="modal fade" id="addModal" tabindex="-1">
+    <div class="modal-dialog">
+        <form asp-controller="Productos" asp-action="Agregar" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Sucursal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>Estado</label>
+                        <select class="form-select" asp-for="ProductoMoto.EstadoPMId" asp-items="@(new SelectList(Model.EstadosProductoMotos, "Id", "Nombre"))">
+                            <option value=""> Selecciona un Estado</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Modelo</label>
+                        <input type="text" class="form-control" asp-for="ProductoMoto.Modelo" required />
+                    </div>
+                    <div class="mb-3">
+                        <label>Marca</label>
+                        <input type="text" class="form-control" asp-for="ProductoMoto.Marca" required />
+                    </div>
+                    <div class="mb-3">
+                        <label>CC</label>
+                        <input type="text" class="form-control" asp-for="ProductoMoto.CC"  required />
+                    </div>
+                    <div class="mb-3">
+                        <label>Año</label>
+                        <input type="text" class="form-control" asp-for="ProductoMoto.Anio" required />
+                    </div>
+                    <div class="mb-3">
+                        <label>Color</label>
+                        <input type="text" class="form-control" asp-for="ProductoMoto.Color"  required />
+                    </div>
+                    <div class="mb-3">
+                        <label>Precio</label>
+                        <input type="number" class="form-control" asp-for="ProductoMoto.Precio" required />
+                    </div>
+                    <div class="mb-3">
+                        <label>Proveedor</label>
+                        <select class="form-select" asp-for="ProductoMoto.ProveedorId" asp-items="@(new SelectList(Model.Proveedores, "Id", "Nombre"))">
+                            <option value=""> Selecciona un Proveedor</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Agregar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -20,6 +20,7 @@ namespace DyasCsrs.Models
         public string Color { get; set; }
         [Required, Column(TypeName = "decimal(8,2)")]
         public decimal Precio { get; set; }
+        public int ProveedorId { get; set; }
         [ForeignKey("ProveedorId")]
         public Proveedor Proveedor { get; set; }
         
