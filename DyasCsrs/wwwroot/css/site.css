@@ -394,3 +394,50 @@ tbody tr:last-child td {
         flex: 1 1 100%;
     }
 }
+
+.venta-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.venta-col-principal {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.venta-col-historial {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.venta-btn-secundario {
+    background-color: #6c757d;
+    color: white;
+    padding: 6px 10px;
+    margin-top: 4px;
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.venta-btn-devolucion {
+    background-color: #dc3545;
+    color: white;
+    padding: 6px 10px;
+    margin-top: 4px;
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+    .venta-btn-secundario:hover,
+    .venta-btn-devolucion:hover {
+        opacity: 0.9;
+    }

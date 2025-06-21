@@ -27,7 +27,6 @@ namespace DyasCsrs.Controllers
                     .Include(v => v.Cliente)
                     .Include(v => v.Detalles).ThenInclude(d => d.ProductoMoto)
                     .ToListAsync(),
-                Detalles = new List<DetallesVenta>()
             };
             return View(vm);
         }
@@ -114,8 +113,35 @@ namespace DyasCsrs.Controllers
 
                 return RedirectToAction("Index");
             }
+            if (accion == "agregarDetalle")
+            {
+                vm.Detalles ??= new List<DetallesVenta>();
 
+                var producto = await _context.ProductoMotos.FindAsync(vm.ProductoId);
+                if (producto != null)
+                {
+                    var detalle = new DetallesVenta
+                    {
+                        ProductoMoto = producto,
+                        Cantidad = vm.DetallesTempCantidad, // Usa la cantidad que el usuario envió
+                        PrecioUnitario = producto.Precio,
+                        SubTotal = producto.Precio * vm.DetallesTempCantidad
+                    };
 
+                    vm.Detalles.Add(detalle);
+                }
+
+                // Recargar combos y listas
+                vm.ProductoMotos = await _context.ProductoMotos.ToListAsync();
+                vm.MetodosPago = await _context.MetodosPago.ToListAsync();
+                vm.Clientes = await _context.Clientes.ToListAsync();
+                vm.Ventas = await _context.Ventas
+                    .Include(v => v.Cliente)
+                    .Include(v => v.Detalles).ThenInclude(d => d.ProductoMoto)
+                    .ToListAsync();
+
+                return View(vm);
+            }
 
             return View(vm);
         }
