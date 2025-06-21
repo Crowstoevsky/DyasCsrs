@@ -29,7 +29,10 @@ namespace DyasCsrs.Controllers
             {
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
                 new Claim(ClaimTypes.Name, usuario.Nombre),
+                new Claim(ClaimTypes.Email, usuario.Email),
+
                 new Claim(ClaimTypes.Role, usuario.Rol.Nombre),
+
             };
             var claimIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var claimPrincipal = new ClaimsPrincipal(claimIdentity);
@@ -43,7 +46,7 @@ namespace DyasCsrs.Controllers
                 return RedirectToAction("Dashboard", "Gerente");
             
             if (usuario.Rol.Nombre == "Vendedor")
-                return RedirectToAction("Index", "Vendedor");
+                return RedirectToAction("Index", "Venta");
 
             return RedirectToAction("Index", "Home");
             

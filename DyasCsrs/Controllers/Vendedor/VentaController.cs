@@ -1,11 +1,10 @@
-﻿using System.Security.Claims;
-using DyasCsrs.Data;
+﻿using DyasCsrs.Data;
 using DyasCsrs.Models;
 using DyasCsrs.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace DyasCsrs.Controllers.Vendedor
+namespace DyasCsrs.Controllers
 {
     public class VentaController : Controller
     {
@@ -16,105 +15,109 @@ namespace DyasCsrs.Controllers.Vendedor
             _context = context;
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Index()
-        //{
-        //    int vendedorId = ObtenerEmpleadoId(); // Ajusta esto según tu autenticación
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var vm = new VentaVM
+            {
+                ProductoMotos = await _context.ProductoMotos.ToListAsync(),
+                MetodosPago = await _context.MetodosPago.ToListAsync(),
+                Clientes = await _context.Clientes.ToListAsync(),
+                Ventas = await _context.Ventas
+                    .Include(v => v.Cliente)
+                    .Include(v => v.Detalles).ThenInclude(d => d.ProductoMoto)
+                    .ToListAsync(),
+                Detalles = new List<DetallesVenta>()
+            };
+            return View(vm);
+        }
 
-        //    var vm = new VentaVM
-        //    {
-        //        HistorialVentas = await _context.Ventas
-        //            .Include(v => v.Cliente)
-        //            .Include(v => v.Detalles).ThenInclude(d => d.ProductoMoto)
-        //            .Where(v => v.Empleado.Id == vendedorId)
-        //            .OrderByDescending(v => v.Fecha)
-        //            .ToListAsync(),
+        [HttpPost]
+        public async Task<IActionResult> Index(VentaVM vm, string accion)
+        {
+            vm.ProductoMotos = await _context.ProductoMotos.ToListAsync();
+            vm.MetodosPago = await _context.MetodosPago.ToListAsync();
+            vm.Clientes = await _context.Clientes.ToListAsync();
+            vm.Ventas = await _context.Ventas
+                .Include(v => v.Cliente)
+                .Include(v => v.Detalles).ThenInclude(d => d.ProductoMoto)
+                .ToListAsync();
 
-        //        ProductosMotos = await _context.ProductoMotos.ToListAsync(),
-        //        Sucursales = await _context.Sucursales.ToListAsync(),
-        //        MetodosPago = await _context.MetodosPago.ToListAsync()
-        //    };
+            if (accion == "buscar")
+            {
+                var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.DNI == vm.Cliente.DNI);
+                if (cliente != null)
+                {
+                    vm.Cliente = cliente;
+                    vm.ClienteId = cliente.Id;
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Cliente no encontrado. Complete los datos para crearlo.");
+                }
+                return View(vm);
+            }
 
-        //    return View(vm);
-        //}
+            if (accion == "crearCliente")
+            {
+                _context.Clientes.Add(vm.Cliente);
+                await _context.SaveChangesAsync();
+                vm.ClienteId = vm.Cliente.Id;
+                return View(vm);
+            }
 
-        //[HttpPost]
-        //public async Task<IActionResult> RegistrarVenta(VentaVM model)
-        //{
-        //    if (!ModelState.IsValid || model.Productos.Count == 0)
-        //    {
-        //        TempData["Error"] = "Datos inválidos. Verifica todos los campos.";
-        //        return RedirectToAction(nameof(Index));
-        //    }
+            if (accion == "registrarVenta")
+            {
+                var empleadoIdStr = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                if (!int.TryParse(empleadoIdStr, out int empleadoId))
+                    return Unauthorized();
 
-        //    // Buscar cliente por DNI
-        //    var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.DNI == model.DNICliente);
-        //    if (cliente == null)
-        //    {
-        //        cliente = new Cliente
-        //        {
-        //            DNI = model.DNICliente,
-        //            Nombre = "Nuevo Cliente",
-        //            Telefono = "000000000",
-        //            Direccion = "Sin Dirección"
-        //        };
-        //        _context.Clientes.Add(cliente);
-        //        await _context.SaveChangesAsync();
-        //    }
+                var venta = new Venta
+                {
+                    ClienteId = vm.ClienteId,
+                    EmpleadoId = empleadoId,
+                    MetodoPagoId = vm.MetodoPagoId,
+                    Fecha = DateOnly.FromDateTime(DateTime.Now),
+                    Detalles = new List<DetallesVenta>(),
+                    Total = 0
+                };
 
-        //    // Crear nueva venta
-        //    var venta = new Venta
-        //    {
-        //        Cliente = cliente,
-        //        Empleado = await _context.Empleados.FindAsync(ObtenerEmpleadoId()),
-        //        MetodoPago = await _context.MetodosPago.FirstAsync(), // Cambiar si tienes un dropdown
-        //        Total = 0,
-        //        Fecha = DateOnly.FromDateTime(DateTime.Now),
-        //        Detalles = new List<DetallesVenta>()
-        //    };
+                foreach (var detalleInput in vm.Detalles)
+                {
+                    if (detalleInput.ProductoMoto?.Id == 0 || detalleInput.Cantidad <= 0)
+                        continue;
 
-        //    foreach (var item in model.Productos)
-        //    {
-        //        var producto = await _context.ProductoMotos.FindAsync(item.ProductoMotoId);
-        //        var stock = await _context.StockSucursales
-        //            .FirstOrDefaultAsync(s => s.ProductoMotoId == item.ProductoMotoId && s.SucursalId == item.SucursalId);
+                    var producto = await _context.ProductoMotos.FindAsync(detalleInput.ProductoMoto.Id);
+                    if (producto == null) continue;
 
-        //        if (stock == null || stock.Cantidad < item.Cantidad)
-        //        {
-        //            TempData["Error"] = $"Stock insuficiente para {producto.Marca} {producto.Modelo}";
-        //            return RedirectToAction(nameof(Index));
-        //        }
+                    var subtotal = producto.Precio * detalleInput.Cantidad;
 
-        //        stock.Cantidad -= item.Cantidad;
+                    venta.Detalles.Add(new DetallesVenta
+                    {
+                        ProductoMoto = producto,
+                        Cantidad = detalleInput.Cantidad,
+                        PrecioUnitario = producto.Precio,
+                        SubTotal = subtotal
+                    });
 
-        //        var detalle = new DetallesVenta
-        //        {
-        //            ProductoMoto = producto,
-        //            Cantidad = item.Cantidad,
-        //            PrecioUnitario = producto.Precio,
-        //            SubTotal = producto.Precio * item.Cantidad
-        //        };
+                    venta.Total += subtotal;
 
-        //        venta.Detalles.Add(detalle);
-        //        venta.Total += detalle.SubTotal;
-        //    }
+                    // (Opcional) Descontar stock
+                    var stock = await _context.StockSucursales
+                        .FirstOrDefaultAsync(s => s.ProductoMotoId == producto.Id);
+                    if (stock != null)
+                        stock.Cantidad -= detalleInput.Cantidad;
+                }
 
-        //    _context.Ventas.Add(venta);
-        //    await _context.SaveChangesAsync();
+                _context.Ventas.Add(venta);
+                await _context.SaveChangesAsync();
 
-        //    TempData["Success"] = "Venta registrada correctamente.";
-        //    return RedirectToAction(nameof(Index));
-        //}
+                return RedirectToAction("Index");
+            }
 
-        //// Método auxiliar (ajustar según tu sistema de login)
-        //private int ObtenerEmpleadoId()
-        //{
-        //    var claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-        //    if (claim == null)
-        //        throw new Exception("No se pudo obtener el ID del empleado desde los claims.");
 
-        //    return int.Parse(claim.Value);
-        //}
 
+            return View(vm);
+        }
     }
 }
