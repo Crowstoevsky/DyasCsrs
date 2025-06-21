@@ -18,7 +18,8 @@
 <!-- Crear cliente si no se encontró -->
 @if (!string.IsNullOrEmpty(Model.Cliente?.DNI) && Model.Cliente.Id == 0)
 {
-    <form method="post">
+    <div class="card bg-light">
+    <form method="post" >
         <input type="hidden" name="accion" value="crearCliente" />
         <input type="hidden" asp-for="Cliente.DNI" />
         <h4>Cliente no encontrado. Crear nuevo:</h4>
@@ -36,6 +37,7 @@
         </div>
         <button type="submit">Guardar Cliente</button>
     </form>
+    </div>
 }
 else if (Model.Cliente?.Id > 0)
 {
@@ -119,30 +121,3 @@ else if (Model.Cliente?.Id > 0)
 
 <hr />
 
-<h3>Historial de Ventas</h3>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Fecha</th>
-            <th>Cliente</th>
-            <th>Total</th>
-            <th>Productos</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var venta in Model.Ventas)
-        {
-            <tr>
-                <td>@venta.Fecha</td>
-                <td>@venta.Cliente?.Nombre</td>
-                <td>@venta.Total.ToString("F2")</td>
-                <td>
-                    @foreach (var d in venta.Detalles)
-                    {
-                        <div>@d.ProductoMoto.Marca - @d.ProductoMoto.Modelo</div>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>

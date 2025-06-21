@@ -1,23 +1,76 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - DyasCsrs</title>
+    <title>@ViewData["Title"] - Panel</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/DyasCsrs.styles.css" asp-append-version="true" />
 </head>
 <body>
+    <button id="menu-toggle" class="btn btn-secondary d-md-none">
+        ☰
+    </button>
 
+    <div class="layout-container">
+        <aside class="layout-aside d-md-block" id="sidebar">
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a class="nav-link bg-red"
+                       asp-controller="Auth" asp-action="Logout">
+                        <img src="~/img/icono-logout.png" alt="Cerrar Sesión" />
+                        Cerrar Sesión
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(currentController == "Venta" ? "active" : "")"
+                       asp-controller="Venta" asp-action="Index">
+                        <img src="~/img/icono-metodo-pago.png" alt="Nueva Venta" />
+                        Nueva Venta
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(currentController == "Devolucion" ? "active" : "")"
+                       asp-controller="Devolucion" asp-action="Index">
+                        <img src="~/img/icono-proveedores.png" alt="Nueva Devolucion" />
+                        Nueva Devolución
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link @(currentController == "Historial" ? "active" : "")"
+                       asp-controller="Historial" asp-action="Index">
+                        <img src="~/img/icono-historial.png" alt="Historial" />
+                        Historial
+                    </a>
+                </li>
+                
+                
+            </ul>
+        </aside>
 
-    <main class="p-5" style="background-color:white;">
-        @RenderBody()
-    </main>
+        <main class="layout-main">
+            @RenderBody()
+        </main>
+    </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        const toggleBtn = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+
+        toggleBtn?.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
