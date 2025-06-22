@@ -13,7 +13,6 @@ namespace DyasCsrs.Models
         [Required, StringLength(200)]
         public string Motivo { get; set; }
 
-        [Required,StringLength(10)]
         public int EstadoDId { get; set; }
         [ForeignKey("EstadoDId")]
         public virtual EstadoDevolucion EstadoDevolucion { get; set; }

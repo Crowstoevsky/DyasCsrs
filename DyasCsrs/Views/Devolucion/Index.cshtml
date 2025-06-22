@@ -1,0 +1,84 @@
+﻿@model DyasCsrs.ViewModels.DevolucionVM
+@{
+    Layout = "~/Views/Shared/_LyVendedor.cshtml";
+}
+
+<h2>Solicitar Devolución</h2>
+
+<!-- Buscar cliente -->
+<form asp-action="BuscarCliente" method="post">
+    <label>DNI del Cliente:</label>
+    <input asp-for="DNICliente" class="form-control" />
+    <button type="submit" class="btn btn-primary mt-2">Buscar</button>
+</form>
+
+@if (Model.ClienteEncontrado != null)
+{
+    <hr />
+    <h4>Cliente: @Model.ClienteEncontrado.Nombre</h4>
+
+    @if (Model.VentasCliente.Any())
+    {
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                    <th>Productos</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var venta in Model.VentasCliente)
+                {
+                    <tr>
+                        <td>@venta.Fecha</td>
+                        <td>@venta.Total.ToString("F2")</td>
+                        <td>
+                            @foreach (var d in venta.Detalles)
+                            {
+                                <div>@d.ProductoMoto.Marca - @d.ProductoMoto.Modelo</div>
+                            }
+                        </td>
+                        <td>
+                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalDevolucion" onclick="setVentaId(@venta.Id)">Solicitar devolución</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info mt-3">No hay ventas registradas para este cliente.</div>
+    }
+}
+
+<!-- Modal de devolución -->
+<div class="modal fade" id="modalDevolucion" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-action="SolicitarDevolucion" method="post" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Registrar Devolución</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" asp-for="NuevaDevolucion.VentaId" id="ventaIdField" />
+                <label>Motivo:</label>
+                <textarea asp-for="NuevaDevolucion.Motivo" class="form-control" required></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Enviar Solicitud</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function setVentaId(id) {
+            document.getElementById('ventaIdField').value = parseInt(id);
+        }
+    </script>
+
+}
