@@ -10,9 +10,9 @@
         <input class="form-control input-dark" type="password" placeholder="Contraseña" asp-for="Password" required />
         <button class="btn-green">Entrar</button>
 
-        @if (ViewData["Mensaje"] != null)
+        @if (TempData["Mensaje"] != null)
         {
-            <div class="alert alert-danger alert-rounded">@ViewData["Mensaje"]</div>
+            <div class="alert alert-danger alert-rounded">@TempData["Mensaje"]</div>
         }
     </form>
 </div>

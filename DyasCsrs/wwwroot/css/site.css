@@ -91,8 +91,8 @@ body {
 }
 
     .btn-red:hover {
-        background-color: var(--btn-red-hover);
-        color: var(--text-light);
+        background-color: var(--btn-red-hover) !important;
+        color: var(--text-light) !important;
     }
 
 /* ===== BACKGROUNDS UTIL ===== */
@@ -192,7 +192,7 @@ body {
 
     .nav-link:hover {
         background-color: #aad69f33;
-        color: #aad69f !important;
+        color: #aad69f ;
     }
 
     .nav-link.active {
@@ -441,3 +441,11 @@ tbody tr:last-child td {
     .venta-btn-devolucion:hover {
         opacity: 0.9;
     }
+
+
+.input-button-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 10px;
+}   

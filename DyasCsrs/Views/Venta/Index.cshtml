@@ -8,34 +8,38 @@
 <h2>Registrar Venta</h2>
 
 <!-- Buscar cliente -->
-<form method="post">
+<form method="post" >
     <input type="hidden" name="accion" value="buscar" />
+    <div class="input-button-card">
+
     <label>DNI:</label>
-    <input asp-for="Cliente.DNI" />
-    <button type="submit">Buscar</button>
+    <input asp-for="Cliente.DNI" class="form-control" />
+    <button type="submit" class="btn btn-primary mt-2">Buscar</button>
+    </div>
 </form>
 
 <!-- Crear cliente si no se encontró -->
 @if (!string.IsNullOrEmpty(Model.Cliente?.DNI) && Model.Cliente.Id == 0)
 {
-    <div class="card bg-light">
+    <div class="card p-3">
     <form method="post" >
         <input type="hidden" name="accion" value="crearCliente" />
+            <p class="alert alert-danger">Cliente no encontrado.</p>
         <input type="hidden" asp-for="Cliente.DNI" />
-        <h4>Cliente no encontrado. Crear nuevo:</h4>
-        <div>
+        <h4 class="mb-3"> Crear nuevo:</h4>
+        <div class="mb-3">
             <label>Nombre:</label>
-            <input asp-for="Cliente.Nombre" />
+            <input asp-for="Cliente.Nombre" class="form-control"/>
         </div>
-        <div>
+        <div class="mb-3">
             <label>Teléfono:</label>
-            <input asp-for="Cliente.Telefono" />
+            <input asp-for="Cliente.Telefono" class="form-control" />
         </div>
-        <div>
+        <div class="mb-3">
             <label>Dirección:</label>
-            <input asp-for="Cliente.Direccion" />
+            <input asp-for="Cliente.Direccion" class="form-control"/>
         </div>
-        <button type="submit">Guardar Cliente</button>
+            <button type="submit" class="btn btn-primary mt-2">Guardar Cliente</button>
     </form>
     </div>
 }
@@ -54,16 +58,7 @@ else if (Model.Cliente?.Id > 0)
         <input type="hidden" asp-for="Cliente.Direccion" />
 
         <!-- Seleccionar producto y cantidad -->
-        <label>Producto:</label>
-        <select asp-for="ProductoId">
-            @foreach (var p in Model.ProductoMotos)
-            {
-                <option value="@p.Id">@p.Marca - @p.Modelo</option>
-            }
-        </select>
 
-        <label>Cantidad:</label>
-        <input asp-for="DetallesTempCantidad" type="number" min="1" value="1" />
 
         @for (int i = 0; i < Model.Detalles.Count; i++)
         {
@@ -72,9 +67,20 @@ else if (Model.Cliente?.Id > 0)
             <input type="hidden" name="Detalles[@i].PrecioUnitario" value="@Model.Detalles[i].PrecioUnitario" />
             <input type="hidden" name="Detalles[@i].SubTotal" value="@Model.Detalles[i].SubTotal" />
         }
+        <div class="input-button-card">
 
+        <label>Producto:</label>
+        <select asp-for="ProductoId" class="form-select">
+            @foreach (var p in Model.ProductoMotos)
+            {
+                <option value="@p.Id">@p.Marca - @p.Modelo</option>
+            }
+        </select>
+        <label>Cantidad:</label>
+        <input asp-for="DetallesTempCantidad" type="number" min="1" value="1" class="form-control"/>
+        </div>
 
-        <button type="submit">Agregar Detalle</button>
+        <button type="submit" class="btn btn-primary mt-2">Agregar Detalle</button>
     </form>
 
     <!-- Tabla de detalles acumulados -->
@@ -107,15 +113,19 @@ else if (Model.Cliente?.Id > 0)
         <input type="hidden" name="accion" value="registrarVenta" />
         <input type="hidden" asp-for="Cliente.Id" />
         <input type="hidden" asp-for="ClienteId" />
-        <select asp-for="MetodoPagoId" asp-items="@(new SelectList(Model.MetodosPago, "Id", "Nombre"))"></select>
+        
 
         @for (int i = 0; i < Model.Detalles.Count; i++)
         {
             <input type="hidden" name="Detalles[@i].ProductoMoto.Id" value="@Model.Detalles[i].ProductoMoto.Id" />
             <input type="hidden" name="Detalles[@i].Cantidad" value="@Model.Detalles[i].Cantidad" />
         }
+        <div class="input-button-card">
 
-        <button type="submit">Registrar Venta</button>
+        
+        <select asp-for="MetodoPagoId" asp-items="@(new SelectList(Model.MetodosPago, "Id", "Nombre"))" class="form-select"></select>
+        <button type="submit" class="btn btn-primary mt-2">Registrar Venta</button>
+        </div>
     </form>
 }
 

@@ -24,7 +24,13 @@ namespace DyasCsrs.Controllers
         public async Task<IActionResult> Login(string email, string password)
         {
             var usuario = await _appDbContext.Empleados.Include(e => e.Rol).FirstOrDefaultAsync(e => e.Email == email && e.Password == password);
-            if (usuario == null) return RedirectToAction(nameof(Login));
+            if (usuario == null)
+            {
+                TempData["Mensaje"] = "Credenciales incorrectas. Por favor, intente de nuevo.";
+                return RedirectToAction(nameof(Login));
+            }
+            ;
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
