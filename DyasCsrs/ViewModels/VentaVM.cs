@@ -4,21 +4,21 @@ namespace DyasCsrs.ViewModels
 {
     public class VentaVM
     {
-        public int EmpleadoId { get; set; } // empleado que realiza la venta
-        public int ClienteId { get; set; } // cliente que realiza la compra
-        public int ProductoId { get; set; } // producto seleccionado para la venta
-        public int MetodoPagoId { get; set; } // metodo de pago seleccionado
-        public Cliente Cliente { get; set; } // crud para cliente
-        public ICollection<Cliente> Clientes { get; set; } // lista de clientes
-        public ICollection<MetodoPago> MetodosPago { get; set; } // lista de metodos de pago
-        public ICollection<ProductoMoto> ProductoMotos { get; set; } // lista de productos
-        public List<DetallesVenta> Detalles { get; set; } = new List<DetallesVenta>(); // detalles de la venta
-        public ICollection<Venta> Ventas { get; set; } // lista de ventas para historial
-        public Venta Venta { get; set; } // venta actual
-                                         // VentaVM.cs
-        public int DetallesTempCantidad { get; set; }
-        public int DetallesTempProductoId { get; set; }
+        public int EmpleadoId { get; set; }
+        public int ClienteId { get; set; }
+        public int ProductoId { get; set; } // usado en el form para seleccionar producto
+        public int MetodoPagoId { get; set; }
+        public int StockSucursalId { get; set; }
+        public Cliente Cliente { get; set; } = new();
+        public ICollection<Cliente> Clientes { get; set; } = new List<Cliente>();
+        public ICollection<MetodoPago> MetodosPago { get; set; } = new List<MetodoPago>();
+        public ICollection<StockSucursal> StockDisponible { get; set; } = new List<StockSucursal>();
+        public List<DetallesVenta> Detalles { get; set; } = new(); // se mantiene acumulado en el form
 
+        public ICollection<Venta> Ventas { get; set; } = new List<Venta>();
+        public Venta Venta { get; set; } = new();
 
+        public int DetallesTempCantidad { get; set; } = 1; // cantidad ingresada para el producto actual
     }
+
 }

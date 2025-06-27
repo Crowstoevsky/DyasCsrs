@@ -53,6 +53,24 @@ namespace DyasCsrs.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clientes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DNI = "12345678",
+                            Direccion = "Calle Falsa 123",
+                            Nombre = "Carlos Sánchez",
+                            Telefono = "987111222"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DNI = "87654321",
+                            Direccion = "Calle Verdadera 456",
+                            Nombre = "María Ruiz",
+                            Telefono = "987333444"
+                        });
                 });
 
             modelBuilder.Entity("DyasCsrs.Models.DetallesVenta", b =>
@@ -75,6 +93,9 @@ namespace DyasCsrs.Migrations
                     b.Property<int>("ProductoMotoID")
                         .HasColumnType("int");
 
+                    b.Property<int?>("StockSucursalId1")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("SubTotal")
                         .HasColumnType("Decimal(8,2)");
 
@@ -84,7 +105,29 @@ namespace DyasCsrs.Migrations
 
                     b.HasIndex("ProductoMotoID");
 
+                    b.HasIndex("StockSucursalId1");
+
                     b.ToTable("DetallesVentas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Cantidad = 1,
+                            CompraId = 1,
+                            PrecioUnitario = 9500.00m,
+                            ProductoMotoID = 1,
+                            SubTotal = 9500.00m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Cantidad = 1,
+                            CompraId = 2,
+                            PrecioUnitario = 9000.00m,
+                            ProductoMotoID = 2,
+                            SubTotal = 9000.00m
+                        });
                 });
 
             modelBuilder.Entity("DyasCsrs.Models.Empleado", b =>
@@ -123,6 +166,35 @@ namespace DyasCsrs.Migrations
                     b.HasIndex("RolId");
 
                     b.ToTable("Empleados");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "admin@store.com",
+                            Nombre = "Administrador",
+                            Password = "admin123",
+                            RolId = 1,
+                            Telefono = "987654321"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "gerente@store.com",
+                            Nombre = "Gerente",
+                            Password = "gerente123",
+                            RolId = 3,
+                            Telefono = "987654321"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Email = "vendedor@store.com",
+                            Nombre = "Vendedor Default",
+                            Password = "vendedor123",
+                            RolId = 2,
+                            Telefono = "987654321"
+                        });
                 });
 
             modelBuilder.Entity("DyasCsrs.Models.EstadoDevolucion", b =>
@@ -141,6 +213,23 @@ namespace DyasCsrs.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EstadosDevolucion");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nombre = "Pendiente"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nombre = "Aprobado"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Nombre = "Rechazado"
+                        });
                 });
 
             modelBuilder.Entity("DyasCsrs.Models.EstadoProductoMoto", b =>
@@ -159,6 +248,18 @@ namespace DyasCsrs.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EstadosProductoMotos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nombre = "Activo"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nombre = "Eliminado"
+                        });
                 });
 
             modelBuilder.Entity("DyasCsrs.Models.MetodoPago", b =>
@@ -176,6 +277,18 @@ namespace DyasCsrs.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MetodosPago");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nombre = "Efectivo"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nombre = "Tarjeta"
+                        });
                 });
 
             modelBuilder.Entity("DyasCsrs.Models.OpcionDevolucion", b =>
@@ -208,6 +321,16 @@ namespace DyasCsrs.Migrations
                         .IsUnique();
 
                     b.ToTable("OpcionesDevolucion");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EstadoDId = 1,
+                            FechaSolicitud = new DateOnly(2025, 7, 3),
+                            Motivo = "Motor con fallas",
+                            VentaId = 1
+                        });
                 });
 
             modelBuilder.Entity("DyasCsrs.Models.ProductoMoto", b =>
@@ -258,6 +381,32 @@ namespace DyasCsrs.Migrations
                     b.HasIndex("ProveedorId");
 
                     b.ToTable("ProductoMotos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Anio = "2022",
+                            CC = "250",
+                            Color = "Negro",
+                            EstadoPMId = 1,
+                            Marca = "Yamaha",
+                            Modelo = "FZ25",
+                            Precio = 15000.00m,
+                            ProveedorId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Anio = "2023",
+                            CC = "150",
+                            Color = "Rojo",
+                            EstadoPMId = 1,
+                            Marca = "Honda",
+                            Modelo = "CBR150R",
+                            Precio = 9000.00m,
+                            ProveedorId = 1
+                        });
                 });
 
             modelBuilder.Entity("DyasCsrs.Models.Proveedor", b =>
@@ -286,6 +435,15 @@ namespace DyasCsrs.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Proveedores");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "contacto@motoparts.com",
+                            Nombre = "MotoParts SAC",
+                            Telefono = "999888777"
+                        });
                 });
 
             modelBuilder.Entity("DyasCsrs.Models.Rol", b =>
@@ -304,6 +462,23 @@ namespace DyasCsrs.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nombre = "Administrador"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nombre = "Vendedor"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Nombre = "Gerente"
+                        });
                 });
 
             modelBuilder.Entity("DyasCsrs.Models.StockSucursal", b =>
@@ -330,6 +505,29 @@ namespace DyasCsrs.Migrations
                     b.HasIndex("ProductoMotoId", "SucursalId");
 
                     b.ToTable("StockSucursales");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Cantidad = 5,
+                            ProductoMotoId = 1,
+                            SucursalId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Cantidad = 3,
+                            ProductoMotoId = 2,
+                            SucursalId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Cantidad = 2,
+                            ProductoMotoId = 2,
+                            SucursalId = 2
+                        });
                 });
 
             modelBuilder.Entity("DyasCsrs.Models.Sucursal", b =>
@@ -353,6 +551,20 @@ namespace DyasCsrs.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sucursales");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nombre = "Sucursal Lima",
+                            Ubicacion = "Av. Siempre Viva 123"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nombre = "Sucursal Arequipa",
+                            Ubicacion = "Av. Los Olivos 456"
+                        });
                 });
 
             modelBuilder.Entity("DyasCsrs.Models.Venta", b =>
@@ -387,6 +599,26 @@ namespace DyasCsrs.Migrations
                     b.HasIndex("MetodoPagoId");
 
                     b.ToTable("Ventas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClienteId = 1,
+                            EmpleadoId = 1,
+                            Fecha = new DateOnly(2025, 7, 2),
+                            MetodoPagoId = 1,
+                            Total = 15000.00m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClienteId = 2,
+                            EmpleadoId = 2,
+                            Fecha = new DateOnly(2025, 7, 2),
+                            MetodoPagoId = 2,
+                            Total = 9000.00m
+                        });
                 });
 
             modelBuilder.Entity("DyasCsrs.Models.DetallesVenta", b =>
@@ -402,6 +634,10 @@ namespace DyasCsrs.Migrations
                         .HasForeignKey("ProductoMotoID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("DyasCsrs.Models.StockSucursal", null)
+                        .WithMany("DetallesVentas")
+                        .HasForeignKey("StockSucursalId1");
 
                     b.Navigation("ProductoMoto");
 
@@ -543,6 +779,11 @@ namespace DyasCsrs.Migrations
             modelBuilder.Entity("DyasCsrs.Models.Rol", b =>
                 {
                     b.Navigation("Empleados");
+                });
+
+            modelBuilder.Entity("DyasCsrs.Models.StockSucursal", b =>
+                {
+                    b.Navigation("DetallesVentas");
                 });
 
             modelBuilder.Entity("DyasCsrs.Models.Sucursal", b =>

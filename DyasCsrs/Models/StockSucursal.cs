@@ -12,5 +12,6 @@ namespace DyasCsrs.Models
         public Sucursal Sucursal { get; set; }
         public int SucursalId { get; set; }
         public int Cantidad { get; set; }
+        public ICollection<DetallesVenta> DetallesVentas { get; set; }
     }
 }

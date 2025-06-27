@@ -7,6 +7,8 @@ namespace DyasCsrs.Models
     {
         [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [NotMapped]
+        public int StockSucursalId { get;set; }
         public int CompraId { get; set; }
 
         [ForeignKey("CompraId")]

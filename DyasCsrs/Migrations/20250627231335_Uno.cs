@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DyasCsrs.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class Uno : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -235,7 +237,8 @@ namespace DyasCsrs.Migrations
                     ProductoMotoID = table.Column<int>(type: "int", nullable: false),
                     Cantidad = table.Column<int>(type: "int", nullable: false),
                     PrecioUnitario = table.Column<decimal>(type: "Decimal(8,2)", nullable: false),
-                    SubTotal = table.Column<decimal>(type: "Decimal(8,2)", nullable: false)
+                    SubTotal = table.Column<decimal>(type: "Decimal(8,2)", nullable: false),
+                    StockSucursalId1 = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -246,6 +249,11 @@ namespace DyasCsrs.Migrations
                         principalTable: "ProductoMotos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DetallesVentas_StockSucursales_StockSucursalId1",
+                        column: x => x.StockSucursalId1,
+                        principalTable: "StockSucursales",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_DetallesVentas_Ventas_CompraId",
                         column: x => x.CompraId,
@@ -282,6 +290,119 @@ namespace DyasCsrs.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Clientes",
+                columns: new[] { "Id", "DNI", "Direccion", "Nombre", "Telefono" },
+                values: new object[,]
+                {
+                    { 1, "12345678", "Calle Falsa 123", "Carlos Sánchez", "987111222" },
+                    { 2, "87654321", "Calle Verdadera 456", "María Ruiz", "987333444" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "EstadosDevolucion",
+                columns: new[] { "Id", "Nombre" },
+                values: new object[,]
+                {
+                    { 1, "Pendiente" },
+                    { 2, "Aprobado" },
+                    { 3, "Rechazado" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "EstadosProductoMotos",
+                columns: new[] { "Id", "Nombre" },
+                values: new object[,]
+                {
+                    { 1, "Activo" },
+                    { 2, "Eliminado" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MetodosPago",
+                columns: new[] { "Id", "Nombre" },
+                values: new object[,]
+                {
+                    { 1, "Efectivo" },
+                    { 2, "Tarjeta" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Proveedores",
+                columns: new[] { "Id", "Email", "Nombre", "Telefono" },
+                values: new object[] { 1, "contacto@motoparts.com", "MotoParts SAC", "999888777" });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Nombre" },
+                values: new object[,]
+                {
+                    { 1, "Administrador" },
+                    { 2, "Vendedor" },
+                    { 3, "Gerente" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Sucursales",
+                columns: new[] { "Id", "Nombre", "Ubicacion" },
+                values: new object[,]
+                {
+                    { 1, "Sucursal Lima", "Av. Siempre Viva 123" },
+                    { 2, "Sucursal Arequipa", "Av. Los Olivos 456" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Empleados",
+                columns: new[] { "Id", "Email", "Nombre", "Password", "RolId", "Telefono" },
+                values: new object[,]
+                {
+                    { 1, "admin@store.com", "Administrador", "admin123", 1, "987654321" },
+                    { 2, "gerente@store.com", "Gerente", "gerente123", 3, "987654321" },
+                    { 3, "vendedor@store.com", "Vendedor Default", "vendedor123", 2, "987654321" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductoMotos",
+                columns: new[] { "Id", "Anio", "CC", "Color", "EstadoPMId", "Marca", "Modelo", "Precio", "ProveedorId" },
+                values: new object[,]
+                {
+                    { 1, "2022", "250", "Negro", 1, "Yamaha", "FZ25", 15000.00m, 1 },
+                    { 2, "2023", "150", "Rojo", 1, "Honda", "CBR150R", 9000.00m, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "StockSucursales",
+                columns: new[] { "Id", "Cantidad", "ProductoMotoId", "SucursalId" },
+                values: new object[,]
+                {
+                    { 1, 5, 1, 1 },
+                    { 2, 3, 2, 1 },
+                    { 3, 2, 2, 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Ventas",
+                columns: new[] { "Id", "ClienteId", "EmpleadoId", "Fecha", "MetodoPagoId", "Total" },
+                values: new object[,]
+                {
+                    { 1, 1, 1, new DateOnly(2025, 7, 2), 1, 15000.00m },
+                    { 2, 2, 2, new DateOnly(2025, 7, 2), 2, 9000.00m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "DetallesVentas",
+                columns: new[] { "Id", "Cantidad", "CompraId", "PrecioUnitario", "ProductoMotoID", "StockSucursalId1", "SubTotal" },
+                values: new object[,]
+                {
+                    { 1, 1, 1, 9500.00m, 1, null, 9500.00m },
+                    { 2, 1, 2, 9000.00m, 2, null, 9000.00m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "OpcionesDevolucion",
+                columns: new[] { "Id", "EstadoDId", "FechaSolicitud", "Motivo", "VentaId" },
+                values: new object[] { 1, 1, new DateOnly(2025, 7, 3), "Motor con fallas", 1 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_DetallesVentas_CompraId",
                 table: "DetallesVentas",
@@ -291,6 +412,11 @@ namespace DyasCsrs.Migrations
                 name: "IX_DetallesVentas_ProductoMotoID",
                 table: "DetallesVentas",
                 column: "ProductoMotoID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetallesVentas_StockSucursalId1",
+                table: "DetallesVentas",
+                column: "StockSucursalId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Empleados_RolId",

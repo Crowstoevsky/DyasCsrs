@@ -20,7 +20,10 @@ namespace DyasCsrs.Controllers
         {
             var vm = new VentaVM
             {
-                ProductoMotos = await _context.ProductoMotos.ToListAsync(),
+                StockDisponible = await _context.StockSucursales
+                    .Include(s => s.ProductoMoto)
+                    .Include(s => s.Sucursal)
+                    .ToListAsync(),
                 MetodosPago = await _context.MetodosPago.ToListAsync(),
                 Clientes = await _context.Clientes.ToListAsync(),
                 Ventas = await _context.Ventas
@@ -34,7 +37,10 @@ namespace DyasCsrs.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(VentaVM vm, string accion)
         {
-            vm.ProductoMotos = await _context.ProductoMotos.ToListAsync();
+            vm.StockDisponible = await _context.StockSucursales
+                .Include(s => s.ProductoMoto)
+                .Include(s => s.Sucursal)
+                .ToListAsync();
             vm.MetodosPago = await _context.MetodosPago.ToListAsync();
             vm.Clientes = await _context.Clientes.ToListAsync();
             vm.Ventas = await _context.Ventas
@@ -64,6 +70,37 @@ namespace DyasCsrs.Controllers
                 vm.ClienteId = vm.Cliente.Id;
                 return View(vm);
             }
+
+            if (accion == "agregarDetalle")
+            {
+                vm.Detalles ??= new List<DetallesVenta>();
+
+                var stock = await _context.StockSucursales
+                    .Include(s => s.ProductoMoto)
+                    .Include(s => s.Sucursal)
+                    .FirstOrDefaultAsync(s => s.Id == vm.StockSucursalId);
+
+                if (stock != null)
+                {
+                    var detalle = new DetallesVenta
+                    {
+                        ProductoMoto = stock.ProductoMoto,
+                        Cantidad = vm.DetallesTempCantidad,
+                        PrecioUnitario = stock.ProductoMoto.Precio,
+                        SubTotal = stock.ProductoMoto.Precio * vm.DetallesTempCantidad,
+
+                        // NUEVO: Guardamos de qué stock viene
+                        // Puedes agregar esto como propiedad temporal en tu DetallesVenta si no existe
+                        // StockSucursalId = stock.Id
+                    };
+
+                    // Aquí debes permitir duplicados si son de distinta sucursal.
+                    vm.Detalles.Add(detalle);
+                }
+
+                return View(vm);
+            }
+
 
             if (accion == "registrarVenta")
             {
@@ -101,9 +138,9 @@ namespace DyasCsrs.Controllers
 
                     venta.Total += subtotal;
 
-                    // (Opcional) Descontar stock
+                    // Descontar stock de la sucursal correcta
                     var stock = await _context.StockSucursales
-                        .FirstOrDefaultAsync(s => s.ProductoMotoId == producto.Id);
+                        .FirstOrDefaultAsync(s => s.ProductoMotoId == producto.Id && s.Cantidad >= detalleInput.Cantidad);
                     if (stock != null)
                         stock.Cantidad -= detalleInput.Cantidad;
                 }
@@ -113,38 +150,8 @@ namespace DyasCsrs.Controllers
 
                 return RedirectToAction("Index");
             }
-            if (accion == "agregarDetalle")
-            {
-                vm.Detalles ??= new List<DetallesVenta>();
-
-                var producto = await _context.ProductoMotos.FindAsync(vm.ProductoId);
-                if (producto != null)
-                {
-                    var detalle = new DetallesVenta
-                    {
-                        ProductoMoto = producto,
-                        Cantidad = vm.DetallesTempCantidad, // Usa la cantidad que el usuario envió
-                        PrecioUnitario = producto.Precio,
-                        SubTotal = producto.Precio * vm.DetallesTempCantidad
-                    };
-
-                    vm.Detalles.Add(detalle);
-                }
-
-                // Recargar combos y listas
-                vm.ProductoMotos = await _context.ProductoMotos.ToListAsync();
-                vm.MetodosPago = await _context.MetodosPago.ToListAsync();
-                vm.Clientes = await _context.Clientes.ToListAsync();
-                vm.Ventas = await _context.Ventas
-                    .Include(v => v.Cliente)
-                    .Include(v => v.Detalles).ThenInclude(d => d.ProductoMoto)
-                    .ToListAsync();
-
-                return View(vm);
-            }
 
             return View(vm);
         }
-        
     }
 }
