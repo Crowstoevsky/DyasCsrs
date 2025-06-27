@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DyasCsrs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250619202613_FirstMigrationDB")]
-    partial class FirstMigrationDB
+    [Migration("20250625152638_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -190,7 +190,6 @@ namespace DyasCsrs.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("EstadoDId")
-                        .HasMaxLength(10)
                         .HasColumnType("int");
 
                     b.Property<DateOnly>("FechaSolicitud")
@@ -433,7 +432,7 @@ namespace DyasCsrs.Migrations
 
                     b.HasOne("DyasCsrs.Models.Venta", "Venta")
                         .WithOne("OpcionDevolucion")
-                        .HasForeignKey("DYASProject.Models.OpcionDevolucion", "VentaId")
+                        .HasForeignKey("DyasCsrs.Models.OpcionDevolucion", "VentaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

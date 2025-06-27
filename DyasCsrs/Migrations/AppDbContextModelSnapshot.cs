@@ -22,7 +22,7 @@ namespace DyasCsrs.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DYASProject.Models.Cliente", b =>
+            modelBuilder.Entity("DyasCsrs.Models.Cliente", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +55,7 @@ namespace DyasCsrs.Migrations
                     b.ToTable("Clientes");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.DetallesVenta", b =>
+            modelBuilder.Entity("DyasCsrs.Models.DetallesVenta", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,7 +87,7 @@ namespace DyasCsrs.Migrations
                     b.ToTable("DetallesVentas");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.Empleado", b =>
+            modelBuilder.Entity("DyasCsrs.Models.Empleado", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -125,7 +125,7 @@ namespace DyasCsrs.Migrations
                     b.ToTable("Empleados");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.EstadoDevolucion", b =>
+            modelBuilder.Entity("DyasCsrs.Models.EstadoDevolucion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -143,7 +143,7 @@ namespace DyasCsrs.Migrations
                     b.ToTable("EstadosDevolucion");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.EstadoProductoMoto", b =>
+            modelBuilder.Entity("DyasCsrs.Models.EstadoProductoMoto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -161,7 +161,7 @@ namespace DyasCsrs.Migrations
                     b.ToTable("EstadosProductoMotos");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.MetodoPago", b =>
+            modelBuilder.Entity("DyasCsrs.Models.MetodoPago", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -178,7 +178,7 @@ namespace DyasCsrs.Migrations
                     b.ToTable("MetodosPago");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.OpcionDevolucion", b =>
+            modelBuilder.Entity("DyasCsrs.Models.OpcionDevolucion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -187,7 +187,6 @@ namespace DyasCsrs.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("EstadoDId")
-                        .HasMaxLength(10)
                         .HasColumnType("int");
 
                     b.Property<DateOnly>("FechaSolicitud")
@@ -211,7 +210,7 @@ namespace DyasCsrs.Migrations
                     b.ToTable("OpcionesDevolucion");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.ProductoMoto", b =>
+            modelBuilder.Entity("DyasCsrs.Models.ProductoMoto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -261,7 +260,7 @@ namespace DyasCsrs.Migrations
                     b.ToTable("ProductoMotos");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.Proveedor", b =>
+            modelBuilder.Entity("DyasCsrs.Models.Proveedor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -289,7 +288,7 @@ namespace DyasCsrs.Migrations
                     b.ToTable("Proveedores");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.Rol", b =>
+            modelBuilder.Entity("DyasCsrs.Models.Rol", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -307,7 +306,7 @@ namespace DyasCsrs.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.StockSucursal", b =>
+            modelBuilder.Entity("DyasCsrs.Models.StockSucursal", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -333,7 +332,7 @@ namespace DyasCsrs.Migrations
                     b.ToTable("StockSucursales");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.Sucursal", b =>
+            modelBuilder.Entity("DyasCsrs.Models.Sucursal", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -356,7 +355,7 @@ namespace DyasCsrs.Migrations
                     b.ToTable("Sucursales");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.Venta", b =>
+            modelBuilder.Entity("DyasCsrs.Models.Venta", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -390,15 +389,15 @@ namespace DyasCsrs.Migrations
                     b.ToTable("Ventas");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.DetallesVenta", b =>
+            modelBuilder.Entity("DyasCsrs.Models.DetallesVenta", b =>
                 {
-                    b.HasOne("DYASProject.Models.Venta", "Venta")
+                    b.HasOne("DyasCsrs.Models.Venta", "Venta")
                         .WithMany("Detalles")
                         .HasForeignKey("CompraId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DYASProject.Models.ProductoMoto", "ProductoMoto")
+                    b.HasOne("DyasCsrs.Models.ProductoMoto", "ProductoMoto")
                         .WithMany("DetallesVentas")
                         .HasForeignKey("ProductoMotoID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -409,9 +408,9 @@ namespace DyasCsrs.Migrations
                     b.Navigation("Venta");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.Empleado", b =>
+            modelBuilder.Entity("DyasCsrs.Models.Empleado", b =>
                 {
-                    b.HasOne("DYASProject.Models.Rol", "Rol")
+                    b.HasOne("DyasCsrs.Models.Rol", "Rol")
                         .WithMany("Empleados")
                         .HasForeignKey("RolId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -420,17 +419,17 @@ namespace DyasCsrs.Migrations
                     b.Navigation("Rol");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.OpcionDevolucion", b =>
+            modelBuilder.Entity("DyasCsrs.Models.OpcionDevolucion", b =>
                 {
-                    b.HasOne("DYASProject.Models.EstadoDevolucion", "EstadoDevolucion")
+                    b.HasOne("DyasCsrs.Models.EstadoDevolucion", "EstadoDevolucion")
                         .WithMany("OpcionesDevolucion")
                         .HasForeignKey("EstadoDId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DYASProject.Models.Venta", "Venta")
+                    b.HasOne("DyasCsrs.Models.Venta", "Venta")
                         .WithOne("OpcionDevolucion")
-                        .HasForeignKey("DYASProject.Models.OpcionDevolucion", "VentaId")
+                        .HasForeignKey("DyasCsrs.Models.OpcionDevolucion", "VentaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -439,15 +438,15 @@ namespace DyasCsrs.Migrations
                     b.Navigation("Venta");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.ProductoMoto", b =>
+            modelBuilder.Entity("DyasCsrs.Models.ProductoMoto", b =>
                 {
-                    b.HasOne("DYASProject.Models.EstadoProductoMoto", "EstadoProductoMoto")
+                    b.HasOne("DyasCsrs.Models.EstadoProductoMoto", "EstadoProductoMoto")
                         .WithMany("ProductosMoto")
                         .HasForeignKey("EstadoPMId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DYASProject.Models.Proveedor", "Proveedor")
+                    b.HasOne("DyasCsrs.Models.Proveedor", "Proveedor")
                         .WithMany("Productos")
                         .HasForeignKey("ProveedorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -458,15 +457,15 @@ namespace DyasCsrs.Migrations
                     b.Navigation("Proveedor");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.StockSucursal", b =>
+            modelBuilder.Entity("DyasCsrs.Models.StockSucursal", b =>
                 {
-                    b.HasOne("DYASProject.Models.ProductoMoto", "ProductoMoto")
+                    b.HasOne("DyasCsrs.Models.ProductoMoto", "ProductoMoto")
                         .WithMany("StockSucursales")
                         .HasForeignKey("ProductoMotoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DYASProject.Models.Sucursal", "Sucursal")
+                    b.HasOne("DyasCsrs.Models.Sucursal", "Sucursal")
                         .WithMany("Stocks")
                         .HasForeignKey("SucursalId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -477,21 +476,21 @@ namespace DyasCsrs.Migrations
                     b.Navigation("Sucursal");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.Venta", b =>
+            modelBuilder.Entity("DyasCsrs.Models.Venta", b =>
                 {
-                    b.HasOne("DYASProject.Models.Cliente", "Cliente")
+                    b.HasOne("DyasCsrs.Models.Cliente", "Cliente")
                         .WithMany("Ventas")
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DYASProject.Models.Empleado", "Empleado")
+                    b.HasOne("DyasCsrs.Models.Empleado", "Empleado")
                         .WithMany("Ventas")
                         .HasForeignKey("EmpleadoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DYASProject.Models.MetodoPago", "MetodoPago")
+                    b.HasOne("DyasCsrs.Models.MetodoPago", "MetodoPago")
                         .WithMany("Ventas")
                         .HasForeignKey("MetodoPagoId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -504,54 +503,54 @@ namespace DyasCsrs.Migrations
                     b.Navigation("MetodoPago");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.Cliente", b =>
+            modelBuilder.Entity("DyasCsrs.Models.Cliente", b =>
                 {
                     b.Navigation("Ventas");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.Empleado", b =>
+            modelBuilder.Entity("DyasCsrs.Models.Empleado", b =>
                 {
                     b.Navigation("Ventas");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.EstadoDevolucion", b =>
+            modelBuilder.Entity("DyasCsrs.Models.EstadoDevolucion", b =>
                 {
                     b.Navigation("OpcionesDevolucion");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.EstadoProductoMoto", b =>
+            modelBuilder.Entity("DyasCsrs.Models.EstadoProductoMoto", b =>
                 {
                     b.Navigation("ProductosMoto");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.MetodoPago", b =>
+            modelBuilder.Entity("DyasCsrs.Models.MetodoPago", b =>
                 {
                     b.Navigation("Ventas");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.ProductoMoto", b =>
+            modelBuilder.Entity("DyasCsrs.Models.ProductoMoto", b =>
                 {
                     b.Navigation("DetallesVentas");
 
                     b.Navigation("StockSucursales");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.Proveedor", b =>
+            modelBuilder.Entity("DyasCsrs.Models.Proveedor", b =>
                 {
                     b.Navigation("Productos");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.Rol", b =>
+            modelBuilder.Entity("DyasCsrs.Models.Rol", b =>
                 {
                     b.Navigation("Empleados");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.Sucursal", b =>
+            modelBuilder.Entity("DyasCsrs.Models.Sucursal", b =>
                 {
                     b.Navigation("Stocks");
                 });
 
-            modelBuilder.Entity("DYASProject.Models.Venta", b =>
+            modelBuilder.Entity("DyasCsrs.Models.Venta", b =>
                 {
                     b.Navigation("Detalles");
 

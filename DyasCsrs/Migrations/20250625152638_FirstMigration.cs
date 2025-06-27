@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DyasCsrs.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigrationDB : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -263,7 +263,7 @@ namespace DyasCsrs.Migrations
                     VentaId = table.Column<int>(type: "int", nullable: false),
                     FechaSolicitud = table.Column<DateOnly>(type: "date", nullable: false),
                     Motivo = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    EstadoDId = table.Column<int>(type: "int", maxLength: 10, nullable: false)
+                    EstadoDId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
