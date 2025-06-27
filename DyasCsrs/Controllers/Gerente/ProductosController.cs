@@ -42,7 +42,7 @@ namespace DyasCsrs.Controllers.Gerente
                 Color = model.ProductoMoto.Anio,
                 Precio = model.ProductoMoto.Precio,
                 ProveedorId = model.ProductoMoto.ProveedorId,
-                EstadoPMId = model.ProductoMoto.EstadoPMId,
+                EstadoPMId = 1,
 
             };
 
