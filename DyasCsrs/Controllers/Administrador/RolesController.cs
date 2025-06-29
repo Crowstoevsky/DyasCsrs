@@ -1,10 +1,12 @@
 ﻿using DyasCsrs.Data;
 using DyasCsrs.Models;
 using DyasCsrs.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DyasCsrs.Controllers.Administrador
 {
+    [Authorize(Roles = "Administrador")]
     public class RolesController : Controller
     {
         private readonly AppDbContext _appDbcontext;

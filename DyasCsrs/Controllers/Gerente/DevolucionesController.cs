@@ -1,10 +1,12 @@
 ﻿using DyasCsrs.Data;
 using DyasCsrs.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DyasCsrs.Controllers.Gerente
 {
+    [Authorize(Roles = "Gerente")]
     public class DevolucionesController : Controller
     {
         private readonly AppDbContext _context;

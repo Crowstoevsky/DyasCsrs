@@ -4,9 +4,11 @@ using DyasCsrs.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DyasCsrs.Controllers.Administrador
 {
+    [Authorize(Roles = "Administrador")]
     public class EmpleadosController : Controller
     {
         private readonly AppDbContext _appDbcontext;

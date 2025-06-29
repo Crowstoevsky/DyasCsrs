@@ -1,10 +1,12 @@
 ﻿using DyasCsrs.Data;
 using DyasCsrs.Models;
 using DyasCsrs.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DyasCsrs.Controllers.Gerente
 {
+    [Authorize(Roles = "Gerente")]
     public class ProductosController : Controller
     {
         private readonly AppDbContext _appDbcontext;

@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using DyasCsrs.Data;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DyasCsrs.Controllers
 {
+    [Authorize(Roles = "Gerente")]
     public class GerenteController : Controller
     {
         private readonly AppDbContext _context;

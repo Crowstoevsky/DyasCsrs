@@ -1,11 +1,13 @@
 ﻿using DyasCsrs.Data;
 using DyasCsrs.Models;
 using DyasCsrs.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DyasCsrs.Controllers
 {
+    [Authorize(Roles = "Vendedor")]
     public class DevolucionController : Controller
     {
         private readonly AppDbContext _context;

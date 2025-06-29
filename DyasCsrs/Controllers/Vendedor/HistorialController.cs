@@ -1,10 +1,12 @@
 ﻿using DyasCsrs.Data;
 using DyasCsrs.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DyasCsrs.Controllers.Vendedor
 {
+    [Authorize(Roles = "Vendedor")]
     public class HistorialController : Controller
     {
         private readonly AppDbContext _appDbcontext;
