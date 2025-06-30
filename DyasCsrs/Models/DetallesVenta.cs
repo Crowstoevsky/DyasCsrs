@@ -13,9 +13,8 @@ namespace DyasCsrs.Models
 
         [ForeignKey("CompraId")]
         public Venta Venta { get; set; }
-        public int ProductoMotoID { get; set; }
         [ForeignKey("ProductoMotoID")]
-
+        public int ProductoMotoID { get; set; }
         public ProductoMoto ProductoMoto { get; set; }
 
         [Required]
