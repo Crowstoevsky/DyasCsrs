@@ -120,7 +120,7 @@ else if (Model.Cliente?.Id > 0)
         }
         <div class="input-button-card">
             <select asp-for="MetodoPagoId" asp-items="@(new SelectList(Model.MetodosPago, "Id", "Nombre"))" class="form-select" required></select>
-            <button type="submit" class="btn btn-success mt-2">Registrar Venta</button>
+            <button type="submit" class="btn btn-primary mt-2">Registrar Venta</button>
         </div>
     </form>
 }

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using DyasCsrs.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 var app = builder.Build();
+
+QuestPDF.Settings.License = LicenseType.Community; 
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

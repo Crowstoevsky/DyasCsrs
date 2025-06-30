@@ -11,6 +11,7 @@
             <th>Cliente</th>
             <th>Total</th>
             <th>Productos</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -26,6 +27,12 @@
                         <div>@d.ProductoMoto.Marca - @d.ProductoMoto.Modelo</div>
                     }
                 </td>
+                <td>
+                    <a class="btn btn-sm btn-danger" href="/Historial/DescargarComprobante?ventaId=@venta.Id">
+                        Descargar PDF
+                    </a>
+                </td>
+
             </tr>
         }
     </tbody>
