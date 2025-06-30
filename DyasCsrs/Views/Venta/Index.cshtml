@@ -58,6 +58,7 @@ else if (Model.Cliente?.Id > 0)
 
         @for (int i = 0; i < Model.Detalles.Count; i++)
         {
+            <input type="hidden" name="Detalles[@i].StockSucursalId" value="@Model.Detalles[i].StockSucursalId" />
             <input type="hidden" name="Detalles[@i].ProductoMoto.Id" value="@Model.Detalles[i].ProductoMoto.Id" />
             <input type="hidden" name="Detalles[@i].Cantidad" value="@Model.Detalles[i].Cantidad" />
             <input type="hidden" name="Detalles[@i].PrecioUnitario" value="@Model.Detalles[i].PrecioUnitario" />

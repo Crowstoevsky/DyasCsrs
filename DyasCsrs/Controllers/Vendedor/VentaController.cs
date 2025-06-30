@@ -90,18 +90,22 @@ namespace DyasCsrs.Controllers
                         Cantidad = vm.DetallesTempCantidad,
                         PrecioUnitario = stock.ProductoMoto.Precio,
                         SubTotal = stock.ProductoMoto.Precio * vm.DetallesTempCantidad,
-
-                        // NUEVO: Guardamos de qué stock viene
-                        // Puedes agregar esto como propiedad temporal en tu DetallesVenta si no existe
-                        // StockSucursalId = stock.Id
+                        StockSucursalId = stock.Id 
                     };
 
-                    // Aquí debes permitir duplicados si son de distinta sucursal.
+
                     vm.Detalles.Add(detalle);
+                }
+
+                foreach (var d in vm.Detalles)
+                {
+                    d.ProductoMoto = await _context.ProductoMotos.FindAsync(d.ProductoMoto?.Id);
+                    
                 }
 
                 return View(vm);
             }
+
 
 
             if (accion == "registrarVenta")
