@@ -56,7 +56,7 @@
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label>Estado</label>
-                                        <select class="form-select" asp-for="ProductoMoto.EstadoPMId" asp-items="@(new SelectList(Model.EstadosProductoMotos, "Id", "Nombre"))">
+                                        <select class="form-select" asp-for="ProductoMoto.EstadoPMId" asp-items="@(new SelectList(Model.EstadosProductoMotos, "Id", "Nombre"))" required>
                                             <option value=""> Selecciona un Estado</option>
                                         </select>
                                     </div>
@@ -86,7 +86,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label>Proveedor</label>
-                                        <select class="form-select" asp-for="ProductoMoto.ProveedorId" asp-items="@(new SelectList(Model.Proveedores, "Id", "Nombre"))">
+                                        <select class="form-select" asp-for="ProductoMoto.ProveedorId" asp-items="@(new SelectList(Model.Proveedores, "Id", "Nombre"))" required>
                                             <option value=""> Selecciona un Proveedor</option>
                                         </select>
                                     </div>
@@ -129,7 +129,7 @@
     </table>
 </div>
 
-<!-- Modal Agregar Empleado -->
+<!-- Modal Agregar -->
 <div class="modal fade" id="addModal" tabindex="-1">
     <div class="modal-dialog">
         <form asp-controller="Productos" asp-action="Agregar" method="post">
@@ -166,7 +166,7 @@
                     </div>
                     <div class="mb-3">
                         <label>Proveedor</label>
-                        <select class="form-select" asp-for="ProductoMoto.ProveedorId" asp-items="@(new SelectList(Model.Proveedores, "Id", "Nombre"))">
+                        <select class="form-select" asp-for="ProductoMoto.ProveedorId" asp-items="@(new SelectList(Model.Proveedores, "Id", "Nombre"))" required>
                             <option value=""> Selecciona un Proveedor</option>
                         </select>
                     </div>

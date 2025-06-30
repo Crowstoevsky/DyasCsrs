@@ -5,7 +5,7 @@
 }
 
 <div class="container mt-4">
-    <h2>Gestión de Productos</h2>
+    <h2>Gestión de Stock</h2>
     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addModal">Agregar</button>
 
     <table>
@@ -47,7 +47,7 @@
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label>Modelo</label>
-                                        <select class="form-select" asp-for="Stock.ProductoMotoId" asp-items="@(new SelectList(Model.ProductosMotos, "Id", "Modelo"))">
+                                        <select class="form-select" asp-for="Stock.ProductoMotoId" asp-items="@(new SelectList(Model.ProductosMotos, "Id", "Modelo"))" required>
                                             <option value=""> Selecciona un Modelo</option>
                                         </select>
                                     </div>
@@ -57,7 +57,7 @@
                                     </div>                                    
                                     <div class="mb-3">
                                         <label>Proveedor</label>
-                                        <select class="form-select" asp-for="Stock.SucursalId" asp-items="@(new SelectList(Model.Sucursales, "Id", "Nombre"))">
+                                        <select class="form-select" asp-for="Stock.SucursalId" asp-items="@(new SelectList(Model.Sucursales, "Id", "Nombre"))" required>
                                             <option value=""> Selecciona una Sucursal</option>
                                         </select>
                                     </div>
@@ -100,7 +100,7 @@
     </table>
 </div>
 
-<!-- Modal Agregar Empleado -->
+<!-- Modal Agregar -->
 <div class="modal fade" id="addModal" tabindex="-1">
     <div class="modal-dialog">
         <form asp-controller="Stock" asp-action="Agregar" method="post">
@@ -112,7 +112,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label>Modelo</label>
-                        <select class="form-select" asp-for="Stock.ProductoMotoId" asp-items="@(new SelectList(Model.ProductosMotos, "Id", "Modelo"))">
+                        <select class="form-select" asp-for="Stock.ProductoMotoId" asp-items="@(new SelectList(Model.ProductosMotos, "Id", "Modelo"))" required>
                             <option value=""> Selecciona un Modelo</option>
                         </select>
                     </div>
@@ -122,7 +122,7 @@
                     </div>
                     <div class="mb-3">
                         <label>Proveedor</label>
-                        <select class="form-select" asp-for="Stock.SucursalId" asp-items="@(new SelectList(Model.Sucursales, "Id", "Nombre"))">
+                        <select class="form-select" asp-for="Stock.SucursalId" asp-items="@(new SelectList(Model.Sucursales, "Id", "Nombre"))" required>
                             <option value=""> Selecciona una Sucursal</option>
                         </select>
                     </div>
