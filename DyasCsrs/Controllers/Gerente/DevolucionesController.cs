@@ -51,13 +51,47 @@ namespace DyasCsrs.Controllers.Gerente
         [HttpPost]
         public async Task<IActionResult> Aprobar(int id)
         {
-            var devolucion = await _context.OpcionesDevolucion.Include(d => d.Venta).FirstOrDefaultAsync(x => x.Id == id);
-            if (devolucion == null) return RedirectToAction("Index");
+            var devolucion = await _context.OpcionesDevolucion
+                .Include(d => d.Venta)
+                    .ThenInclude(v => v.Detalles)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (devolucion == null)
+                return RedirectToAction("Index");
 
             devolucion.EstadoDId = 2; // Aprobado
+
+            var venta = devolucion.Venta;
+
+            if (venta != null)
+            {
+                // Poner el total de la venta a 0 para que no se cuente en el dashboard
+                venta.Total = 0.00m;
+
+                foreach (var detalle in venta.Detalles)
+                {
+                    var productoId = detalle.ProductoMotoID;
+                    var stockSucursalId = detalle.StockSucursalId;
+
+                    // Validación básica
+                    if (stockSucursalId <= 0)
+                        continue;
+
+                    // Buscar el stock real en la tabla StockSucursales
+                    var stockReal = await _context.StockSucursales
+                        .FirstOrDefaultAsync(s => s.Id == stockSucursalId && s.ProductoMotoId == productoId);
+
+                    if (stockReal != null)
+                    {
+                        stockReal.Cantidad += detalle.Cantidad;
+                    }
+                }
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Rechazar(int id)

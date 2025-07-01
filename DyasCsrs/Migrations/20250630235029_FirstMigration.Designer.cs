@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DyasCsrs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250627231335_Uno")]
-    partial class Uno
+    [Migration("20250630235029_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,7 +96,7 @@ namespace DyasCsrs.Migrations
                     b.Property<int>("ProductoMotoID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StockSucursalId1")
+                    b.Property<int>("StockSucursalId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("SubTotal")
@@ -108,7 +108,7 @@ namespace DyasCsrs.Migrations
 
                     b.HasIndex("ProductoMotoID");
 
-                    b.HasIndex("StockSucursalId1");
+                    b.HasIndex("StockSucursalId");
 
                     b.ToTable("DetallesVentas");
 
@@ -120,6 +120,7 @@ namespace DyasCsrs.Migrations
                             CompraId = 1,
                             PrecioUnitario = 9500.00m,
                             ProductoMotoID = 1,
+                            StockSucursalId = 1,
                             SubTotal = 9500.00m
                         },
                         new
@@ -129,6 +130,7 @@ namespace DyasCsrs.Migrations
                             CompraId = 2,
                             PrecioUnitario = 9000.00m,
                             ProductoMotoID = 2,
+                            StockSucursalId = 2,
                             SubTotal = 9000.00m
                         });
                 });
@@ -638,11 +640,15 @@ namespace DyasCsrs.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DyasCsrs.Models.StockSucursal", null)
+                    b.HasOne("DyasCsrs.Models.StockSucursal", "StockSucursal")
                         .WithMany("DetallesVentas")
-                        .HasForeignKey("StockSucursalId1");
+                        .HasForeignKey("StockSucursalId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("ProductoMoto");
+
+                    b.Navigation("StockSucursal");
 
                     b.Navigation("Venta");
                 });

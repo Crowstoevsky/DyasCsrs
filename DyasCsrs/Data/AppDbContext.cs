@@ -33,7 +33,11 @@ namespace DyasCsrs.Data
 
             modelBuilder.Entity<StockSucursal>()
                 .HasIndex(s => new { s.ProductoMotoId, s.SucursalId });
-
+            modelBuilder.Entity<DetallesVenta>()
+                .HasOne(d => d.StockSucursal)
+                .WithMany(s => s.DetallesVentas)
+                .HasForeignKey(d => d.StockSucursalId)
+                .OnDelete(DeleteBehavior.Restrict); 
             // Roles
             modelBuilder.Entity<Rol>().HasData(
                 new Rol { Id = 1, Nombre = "Administrador" },
@@ -105,9 +109,28 @@ namespace DyasCsrs.Data
 
             // Detalles de venta
             modelBuilder.Entity<DetallesVenta>().HasData(
-                new DetallesVenta { Id = 1, CompraId = 1, ProductoMotoID = 1, Cantidad = 1, PrecioUnitario = 9500.00m, SubTotal = 9500.00m },
-                new DetallesVenta { Id = 2, CompraId = 2, ProductoMotoID = 2, Cantidad = 1, PrecioUnitario = 9000.00m, SubTotal = 9000.00m }
+                new DetallesVenta
+                {
+                    Id = 1,
+                    CompraId = 1,
+                    ProductoMotoID = 1,
+                    Cantidad = 1,
+                    PrecioUnitario = 9500.00m,
+                    SubTotal = 9500.00m,
+                    StockSucursalId = 1 // Producto 1 en Sucursal 1
+                },
+                new DetallesVenta
+                {
+                    Id = 2,
+                    CompraId = 2,
+                    ProductoMotoID = 2,
+                    Cantidad = 1,
+                    PrecioUnitario = 9000.00m,
+                    SubTotal = 9000.00m,
+                    StockSucursalId = 2 // Producto 2 en Sucursal 1
+                }
             );
+
 
             // Opciones de devolución
             modelBuilder.Entity<OpcionDevolucion>().HasData(

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DyasCsrs.Migrations
 {
     /// <inheritdoc />
-    public partial class Uno : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -233,12 +233,12 @@ namespace DyasCsrs.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    StockSucursalId = table.Column<int>(type: "int", nullable: false),
                     CompraId = table.Column<int>(type: "int", nullable: false),
                     ProductoMotoID = table.Column<int>(type: "int", nullable: false),
                     Cantidad = table.Column<int>(type: "int", nullable: false),
                     PrecioUnitario = table.Column<decimal>(type: "Decimal(8,2)", nullable: false),
-                    SubTotal = table.Column<decimal>(type: "Decimal(8,2)", nullable: false),
-                    StockSucursalId1 = table.Column<int>(type: "int", nullable: true)
+                    SubTotal = table.Column<decimal>(type: "Decimal(8,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -250,10 +250,11 @@ namespace DyasCsrs.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DetallesVentas_StockSucursales_StockSucursalId1",
-                        column: x => x.StockSucursalId1,
+                        name: "FK_DetallesVentas_StockSucursales_StockSucursalId",
+                        column: x => x.StockSucursalId,
                         principalTable: "StockSucursales",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DetallesVentas_Ventas_CompraId",
                         column: x => x.CompraId,
@@ -391,11 +392,11 @@ namespace DyasCsrs.Migrations
 
             migrationBuilder.InsertData(
                 table: "DetallesVentas",
-                columns: new[] { "Id", "Cantidad", "CompraId", "PrecioUnitario", "ProductoMotoID", "StockSucursalId1", "SubTotal" },
+                columns: new[] { "Id", "Cantidad", "CompraId", "PrecioUnitario", "ProductoMotoID", "StockSucursalId", "SubTotal" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, 9500.00m, 1, null, 9500.00m },
-                    { 2, 1, 2, 9000.00m, 2, null, 9000.00m }
+                    { 1, 1, 1, 9500.00m, 1, 1, 9500.00m },
+                    { 2, 1, 2, 9000.00m, 2, 2, 9000.00m }
                 });
 
             migrationBuilder.InsertData(
@@ -414,9 +415,9 @@ namespace DyasCsrs.Migrations
                 column: "ProductoMotoID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DetallesVentas_StockSucursalId1",
+                name: "IX_DetallesVentas_StockSucursalId",
                 table: "DetallesVentas",
-                column: "StockSucursalId1");
+                column: "StockSucursalId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Empleados_RolId",
