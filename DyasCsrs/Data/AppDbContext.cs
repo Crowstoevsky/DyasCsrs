@@ -41,8 +41,8 @@ namespace DyasCsrs.Data
             // Roles
             modelBuilder.Entity<Rol>().HasData(
                 new Rol { Id = 1, Nombre = "Administrador" },
-                new Rol { Id = 2, Nombre = "Vendedor" },
-                new Rol { Id = 3, Nombre = "Gerente" }
+                new Rol { Id = 2, Nombre = "Gerente" },
+                new Rol { Id = 3, Nombre = "Vendedor" }
             );
 
             // Métodos de pago

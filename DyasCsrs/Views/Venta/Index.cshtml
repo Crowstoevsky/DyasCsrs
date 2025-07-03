@@ -67,15 +67,26 @@ else if (Model.Cliente?.Id > 0)
 
         <div class="input-button-card">
             <label>Producto:</label>
-            <select asp-for="StockSucursalId" class="form-select" required>
+            <select id="producto-select" asp-for="StockSucursalId" class="form-select" required>
                 @foreach (var p in Model.StockDisponible)
                 {
-                    <option value="@p.Id">@p.ProductoMoto.Marca - @p.ProductoMoto.Modelo | @p.Sucursal.Nombre</option>
+                    <option value="@p.Id" data-stock="@p.Cantidad">
+                        @p.ProductoMoto.Marca - @p.ProductoMoto.Modelo | @p.Sucursal.Nombre (Stock: @p.Cantidad)
+                    </option>
                 }
             </select>
 
+
             <label>Cantidad:</label>
             <input asp-for="DetallesTempCantidad" type="number" min="1" value="1" class="form-control" />
+            <span asp-validation-for="DetallesTempCantidad" class="text-danger"></span>
+
+            @if (ViewData["ErrorStock"] != null)
+            {
+                <div class="alert alert-danger mt-2">@ViewData["ErrorStock"]</div>
+            }
+
+
         </div>
 
         <button type="submit" class="btn btn-primary mt-2">Agregar Detalle</button>

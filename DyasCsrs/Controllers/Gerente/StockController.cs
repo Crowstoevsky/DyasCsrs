@@ -35,6 +35,11 @@ namespace DyasCsrs.Controllers.Gerente
         [HttpPost]
         public async Task<IActionResult> Agregar(StockCrudVM model)
         {
+            if (model.Stock.Cantidad <= 0)
+            {
+                ViewData["ErrorStock"] = "La cantidad debe ser mayor a 0.";
+                return View(model);
+            }
             StockSucursal nuevoStock = new StockSucursal
             {
                 Cantidad = model.Stock.Cantidad,
@@ -53,6 +58,11 @@ namespace DyasCsrs.Controllers.Gerente
         [HttpPost]
         public async Task<IActionResult> Editar(StockCrudVM model)
         {
+            if (model.Stock.Cantidad <= 0)
+            {
+                ViewData["ErrorStock"] = "La cantidad debe ser mayor a 0.";
+                return View(model);
+            }
             var stockExistente = await _appDbcontext.StockSucursales.FindAsync(model.StockId);
             if (stockExistente == null)
                 return RedirectToAction(nameof(Index));

@@ -95,6 +95,12 @@ namespace DyasCsrs.Controllers
 
                 if (stock != null)
                 {
+                    if (vm.DetallesTempCantidad <= 0)
+                    {
+                        ViewData["ErrorStock"] = "La cantidad debe ser mayor a 0.";
+                        return View(vm);
+                    }
+
                     Console.WriteLine($"Stock encontrado: {stock.ProductoMoto.Marca} {stock.ProductoMoto.Modelo} - Cantidad disponible: {stock.Cantidad}");
 
                     var yaAgregados = vm.Detalles

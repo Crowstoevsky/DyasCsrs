@@ -52,8 +52,14 @@
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label>Cantidad</label>
-                                        <input type="number" class="form-control" asp-for="Stock.Cantidad" value="@stock.Cantidad" required />
+                                        <label>Cantidad:</label>
+                                        <input asp-for="Stock.Cantidad" type="number" min="1" value="1" class="form-control" />
+                                        <span asp-validation-for="Stock.Cantidad" class="text-danger"></span>
+
+                                        @if (ViewData["ErrorStock"] != null)
+                                        {
+                                            <div class="alert alert-danger mt-2">@ViewData["ErrorStock"]</div>
+                                        }
                                     </div>                                    
                                     <div class="mb-3">
                                         <label>Proveedor</label>
@@ -117,8 +123,14 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label>Cantidad</label>
-                        <input type="number" class="form-control" asp-for="Stock.Cantidad" required />
+                        <label>Cantidad:</label>
+                        <input asp-for="Stock.Cantidad" type="number" min="1" value="1" class="form-control" />
+                        <span asp-validation-for="Stock.Cantidad" class="text-danger"></span>
+
+                        @if (ViewData["ErrorStock"] != null)
+                        {
+                            <div class="alert alert-danger mt-2">@ViewData["ErrorStock"]</div>
+                        }
                     </div>
                     <div class="mb-3">
                         <label>Proveedor</label>
