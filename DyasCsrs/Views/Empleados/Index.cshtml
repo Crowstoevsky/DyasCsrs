@@ -35,39 +35,48 @@
                 <!-- Modal Editar -->
                 <div class="modal fade" id="editModal_@empleado.Id" tabindex="-1">
                     <div class="modal-dialog">
-                        <form asp-action="Editar" method="post">
-                            <input type="hidden" asp-for="EmpleadoId" value="@empleado.Id" />
+                        <form asp-controller="Empleados" asp-action="Editar" method="post">
+                            <input type="hidden" name="EmpleadoId" value="@empleado.Id" />
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Editar Empleado</h5>
+                                    <h5 class="modal-title">Agregar Empleado</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="mb-3">
-                                        <label>Nombre</label>
-                                        <input type="text" class="form-control" asp-for="Empleado.Nombre" value="@empleado.Nombre" required />
+                                        <label class="form-label">Nombre</label>
+                                        <input type="text" name="Nombre" class="form-control" value="@empleado.Nombre" maxlength="250" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required />
+                                        <span asp-validation-for="Empleado.Nombre" class="text-danger"></span>
+
                                     </div>
                                     <div class="mb-3">
-                                        <label>Email</label>
-                                        <input type="email" class="form-control" asp-for="Empleado.Email" value="@empleado.Email" required />
+                                        <label class="form-label">Email</label>
+                                        <input type="email" name="Email" class="form-control" value="@empleado.Email" maxlength="50" required />
+                                        <span asp-validation-for="Empleado.Email" class="text-danger"></span>
+
                                     </div>
                                     <div class="mb-3">
-                                        <label>Teléfono</label>
-                                        <input type="text" class="form-control" asp-for="Empleado.Telefono" value="@empleado.Telefono" required />
+                                        <label class="form-label">Teléfono</label>
+                                        <input type="text" name="Telefono" class="form-control" value="@empleado.Telefono" maxlength="9" minlength="9" pattern="\d{9}" inputmode="numeric" required />
+                                        <span asp-validation-for="Empleado.Telefono" class="text-danger"></span>
+
                                     </div>
                                     <div class="mb-3">
-                                        <label>Password</label>
-                                        <input type="password" class="form-control" asp-for="Empleado.Password" value="@empleado.Password" required />
+                                        <label class="form-label">Password</label>
+                                        <input type="password" name="Password" class="form-control" value="@empleado.Password" minlength="6" maxlength="50" required />
+                                        <span asp-validation-for="Empleado.Password" class="text-danger"></span>
+
                                     </div>
                                     <div class="mb-3">
-                                        <label>Rol</label>
-                                        <select class="form-select" asp-for="Empleado.RolId" asp-items="@(new SelectList(Model.Roles, "Id", "Nombre"))">
-                                            <option value=""> Selecciona un Rol</option>
+                                        <label class="form-label">Rol</label>
+                                        <select class="form-select" asp-for="Empleado.RolId" asp-items="@(new SelectList(Model.Roles, "Id", "Nombre"))" required>
+                                            <option value="">Seleccione un rol</option>
                                         </select>
+                                        <span asp-validation-for="Empleado.RolId" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <button type="submit" class="btn btn-primary">Agregar</button>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                 </div>
                             </div>
@@ -115,25 +124,30 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">Nombre</label>
-                        <input type="text" class="form-control" asp-for="Empleado.Nombre" />
+                        <input type="text" class="form-control" asp-for="Empleado.Nombre" maxlength="250" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required />
+                        <span asp-validation-for="Empleado.Nombre" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email</label>
-                        <input type="email" class="form-control" asp-for="Empleado.Email" />
+                        <input type="email" class="form-control" asp-for="Empleado.Email" maxlength="50" required />
+                        <span asp-validation-for="Empleado.Email" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Telefono</label>
-                        <input type="text" class="form-control" asp-for="Empleado.Telefono" />
+                        <label class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" asp-for="Empleado.Telefono" maxlength="9" minlength="9" pattern="\d{9}" inputmode="numeric" required />
+                        <span asp-validation-for="Empleado.Telefono" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Password</label>
-                        <input type="password" class="form-control" asp-for="Empleado.Password" />
+                        <input type="password" class="form-control" asp-for="Empleado.Password" minlength="6" maxlength="50" required />
+                        <span asp-validation-for="Empleado.Password" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Rol</label>
-                        <select class="form-select" asp-for="Empleado.RolId" asp-items="@(new SelectList(Model.Roles, "Id", "Nombre"))">
+                        <select class="form-select" asp-for="Empleado.RolId" asp-items="@(new SelectList(Model.Roles, "Id", "Nombre"))" required>
                             <option value="">Seleccione un rol</option>
                         </select>
+                        <span asp-validation-for="Empleado.RolId" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -142,5 +156,9 @@
                 </div>
             </div>
         </form>
+
     </div>
 </div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -78,8 +78,8 @@ namespace DyasCsrs.Data
             // Empleados
             modelBuilder.Entity<Empleado>().HasData(
                 new Empleado { Id = 1, Nombre = "Administrador", Email = "admin@store.com", Password = "admin123", Telefono = "987654321", RolId = 1 },
-                new Empleado { Id = 2, Nombre = "Gerente", Email = "gerente@store.com", Password = "gerente123", Telefono = "987654321", RolId = 3 },
-                new Empleado { Id = 3, Nombre = "Vendedor Default", Email = "vendedor@store.com", Password = "vendedor123", Telefono = "987654321", RolId = 2 }
+                new Empleado { Id = 2, Nombre = "Gerente", Email = "gerente@store.com", Password = "gerente123", Telefono = "987654321", RolId = 2 },
+                new Empleado { Id = 3, Nombre = "Vendedor Default", Email = "vendedor@store.com", Password = "vendedor123", Telefono = "987654321", RolId = 3 }
             );
 
             // Clientes

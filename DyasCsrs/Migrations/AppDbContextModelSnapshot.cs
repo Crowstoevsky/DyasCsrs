@@ -355,7 +355,8 @@ namespace DyasCsrs.Migrations
 
                     b.Property<string>("Color")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("EstadoPMId")
                         .HasColumnType("int");

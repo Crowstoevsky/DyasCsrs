@@ -81,10 +81,7 @@ else if (Model.Cliente?.Id > 0)
             <input asp-for="DetallesTempCantidad" type="number" min="1" value="1" class="form-control" />
             <span asp-validation-for="DetallesTempCantidad" class="text-danger"></span>
 
-            @if (ViewData["ErrorStock"] != null)
-            {
-                <div class="alert alert-danger mt-2">@ViewData["ErrorStock"]</div>
-            }
+            
 
 
         </div>

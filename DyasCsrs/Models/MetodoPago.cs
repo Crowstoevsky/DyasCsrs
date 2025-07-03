@@ -5,12 +5,12 @@ namespace DyasCsrs.Models
 {
     public class MetodoPago
     {
-        [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "El nombre es obligatorio")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Debe tener entre 3 y 50 caracteres")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", ErrorMessage = "Solo se permiten letras")]
         public string Nombre { get; set; }
-
-        public ICollection<Venta> Ventas { get; set; }
     }
+
 }

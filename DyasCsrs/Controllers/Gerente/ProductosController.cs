@@ -67,7 +67,7 @@ namespace DyasCsrs.Controllers.Gerente
             productoExistente.Modelo = model.ProductoMoto.Modelo;
             productoExistente.CC = model.ProductoMoto.CC;
             productoExistente.Anio = model.ProductoMoto.Anio;
-            productoExistente.Color = model.ProductoMoto.Anio;
+            productoExistente.Color = model.ProductoMoto.Color;
             productoExistente.Precio = model.ProductoMoto.Precio;
             productoExistente.ProveedorId = model.ProductoMoto.ProveedorId;
             productoExistente.EstadoPMId = model.ProductoMoto.EstadoPMId;

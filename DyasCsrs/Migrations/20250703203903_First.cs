@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DyasCsrs.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class First : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -103,7 +103,8 @@ namespace DyasCsrs.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Ubicacion = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Ubicacion = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Activo = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -120,7 +121,7 @@ namespace DyasCsrs.Migrations
                     Modelo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CC = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
                     Anio = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Precio = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
                     ProveedorId = table.Column<int>(type: "int", nullable: false),
                     EstadoPMId = table.Column<int>(type: "int", nullable: false)
@@ -172,7 +173,7 @@ namespace DyasCsrs.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductoMotoId = table.Column<int>(type: "int", nullable: false),
-                    SucursalId = table.Column<int>(type: "int", nullable: false),
+                    SucursalId = table.Column<int>(type: "int", nullable: true),
                     Cantidad = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -188,8 +189,7 @@ namespace DyasCsrs.Migrations
                         name: "FK_StockSucursales_Sucursales_SucursalId",
                         column: x => x.SucursalId,
                         principalTable: "Sucursales",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -339,17 +339,17 @@ namespace DyasCsrs.Migrations
                 values: new object[,]
                 {
                     { 1, "Administrador" },
-                    { 2, "Vendedor" },
-                    { 3, "Gerente" }
+                    { 2, "Gerente" },
+                    { 3, "Vendedor" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Sucursales",
-                columns: new[] { "Id", "Nombre", "Ubicacion" },
+                columns: new[] { "Id", "Activo", "Nombre", "Ubicacion" },
                 values: new object[,]
                 {
-                    { 1, "Sucursal Lima", "Av. Siempre Viva 123" },
-                    { 2, "Sucursal Arequipa", "Av. Los Olivos 456" }
+                    { 1, true, "Sucursal Lima", "Av. Siempre Viva 123" },
+                    { 2, true, "Sucursal Arequipa", "Av. Los Olivos 456" }
                 });
 
             migrationBuilder.InsertData(

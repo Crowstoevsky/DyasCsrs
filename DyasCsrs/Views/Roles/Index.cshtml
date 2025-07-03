@@ -42,7 +42,10 @@
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label>Nombre</label>
-                                        <input type="text" class="form-control" name="Rol.Nombre" value="@item.Nombre" required />
+                                        <input type="text" class="form-control" name="Nombre" value="@item.Nombre"
+                                               maxlength="50" minlength="3"
+                                               pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required />
+                                        <span asp-validation-for="Rol.Nombre" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -95,7 +98,10 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">Nombre</label>
-                        <input type="text" class="form-control" asp-for="Rol.Nombre" />
+                        <input type="text" class="form-control" asp-for="Rol.Nombre"
+                               maxlength="50" minlength="3"
+                               pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required />
+                        <span asp-validation-for="Rol.Nombre" class="text-danger"></span>
                     </div>
 
                 </div>
@@ -107,3 +113,6 @@
         </form>
     </div>
 </div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

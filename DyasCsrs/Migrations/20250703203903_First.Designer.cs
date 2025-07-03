@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DyasCsrs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250703150533_SolvingSolving")]
-    partial class SolvingSolving
+    [Migration("20250703203903_First")]
+    partial class First
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -358,7 +358,8 @@ namespace DyasCsrs.Migrations
 
                     b.Property<string>("Color")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("EstadoPMId")
                         .HasColumnType("int");

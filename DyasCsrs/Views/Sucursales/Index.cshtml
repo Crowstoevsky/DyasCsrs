@@ -83,12 +83,15 @@
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label>Nombre</label>
-                                        <input type="text" class="form-control" asp-for="Sucursal.Nombre" value="@sucursal.Nombre" required />
+                                        <input type="text" class="form-control" asp-for="Sucursal.Nombre" maxlength="50" required pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" value="@sucursal.Nombre" />
+                                        <span asp-validation-for="Sucursal.Nombre" class="text-danger"></span>
                                     </div>
                                     <div class="mb-3">
                                         <label>Ubicación</label>
-                                        <input type="text" class="form-control" asp-for="Sucursal.Ubicacion" value="@sucursal.Ubicacion" required />
+                                        <input type="text" class="form-control" asp-for="Sucursal.Ubicacion" maxlength="100" required value="@sucursal.Ubicacion" />
+                                        <span asp-validation-for="Sucursal.Ubicacion" class="text-danger"></span>
                                     </div>
+
 
                                 </div>
                                 <div class="modal-footer">
@@ -128,7 +131,7 @@
     </table>
 </div>
 
-<!-- Modal Agregar Empleado -->
+<!-- Modal Agregar Sucursal -->
 <div class="modal fade" id="addModal" tabindex="-1">
     <div class="modal-dialog">
         <form asp-controller="Sucursales" asp-action="Agregar" method="post">
@@ -139,14 +142,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Nombre</label>
-                        <input type="text" class="form-control" asp-for="Sucursal.Nombre" />
+                        <label asp-for="Sucursal.Nombre" class="form-label"></label>
+                        <input asp-for="Sucursal.Nombre" class="form-control" maxlength="50" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required />
+                        <span asp-validation-for="Sucursal.Nombre" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Ubicacion</label>
-                        <input type="text" class="form-control" asp-for="Sucursal.Ubicacion" />
+                        <label asp-for="Sucursal.Ubicacion" class="form-label"></label>
+                        <input asp-for="Sucursal.Ubicacion" class="form-control" maxlength="100" required />
+                        <span asp-validation-for="Sucursal.Ubicacion" class="text-danger"></span>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Agregar</button>
@@ -156,3 +160,7 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

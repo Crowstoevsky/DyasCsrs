@@ -90,54 +90,49 @@
                         </div>
                     </div>
                 }
-            
 
-
-
-                <!-- Modal Editar -->
+                <!-- Modal Editar Producto -->
                 <div class="modal fade" id="editModal_@moto.Id" tabindex="-1">
                     <div class="modal-dialog">
                         <form asp-action="Editar" method="post">
-                            <input type="hidden" asp-for="ProductoMotoId" value="@moto.Id" />
+                            <input type="hidden" name="ProductoMotoId" value="@moto.Id" />
+                            <input type="hidden" name="ProductoMoto.EstadoPMId" value="@moto.EstadoPMId" />
+
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Editar Producto Moto</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                 </div>
                                 <div class="modal-body">
-                                    
-
-                                    <!-- Resto del formulario con valores precargados -->
-                                    <div class="mb-3">
-                                        <label>Modelo</label>
-                                        <input type="text" class="form-control" name="ProductoMoto.Modelo" value="@moto.Modelo" required />
-                                    </div>
                                     <div class="mb-3">
                                         <label>Marca</label>
-                                        <input type="text" class="form-control" name="ProductoMoto.Marca" value="@moto.Marca" required />
+                                        <input type="text" class="form-control" name="ProductoMoto.Marca" value="@moto.Marca" maxlength="50" pattern="[a-zA-Z0-9\s\-]+" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Modelo</label>
+                                        <input type="text" class="form-control" name="ProductoMoto.Modelo" value="@moto.Modelo" maxlength="50" pattern="[a-zA-Z0-9\s\-]+" required />
                                     </div>
                                     <div class="mb-3">
                                         <label>CC</label>
-                                        <input type="text" class="form-control" name="ProductoMoto.CC" value="@moto.CC" required />
+                                        <input type="text" class="form-control" name="ProductoMoto.CC" value="@moto.CC" maxlength="6" pattern="\d{2,6}" required />
                                     </div>
                                     <div class="mb-3">
                                         <label>Año</label>
-                                        <input type="text" class="form-control" name="ProductoMoto.Anio" value="@moto.Anio" required />
+                                        <input type="text" class="form-control" name="ProductoMoto.Anio" value="@moto.Anio" maxlength="4" pattern="\d{4}" required />
                                     </div>
                                     <div class="mb-3">
                                         <label>Color</label>
-                                        <input type="text" class="form-control" name="ProductoMoto.Color" value="@moto.Color" required />
+                                        <input type="text" class="form-control" name="ProductoMoto.Color" value="@moto.Color" maxlength="30" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required />
                                     </div>
                                     <div class="mb-3">
                                         <label>Precio</label>
-                                        <input type="number" class="form-control" name="ProductoMoto.Precio" step="0.01" value="@moto.Precio" required />
+                                        <input type="number" class="form-control" name="ProductoMoto.Precio" value="@moto.Precio.ToString("F2")" step="0.01" min="0.01" max="999999.99" required />
                                     </div>
                                     <div class="mb-3">
                                         <label>Proveedor</label>
                                         <select class="form-select" asp-for="ProductoMoto.ProveedorId" asp-items="@(new SelectList(Model.Proveedores, "Id", "Nombre"))" required>
-                                            <option value="">Selecciona un Proveedor</option>
+                                            <option value=""> Selecciona un Proveedor</option>
                                         </select>
-
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -148,6 +143,7 @@
                         </form>
                     </div>
                 </div>
+
 
                 <!-- Modal Eliminar -->
                 <div class="modal fade" id="deleteModal_@moto.Id" tabindex="-1">
@@ -176,7 +172,7 @@
     </table>
 </div>
 
-<!-- Modal Agregar -->
+<!-- Modal Agregar Producto -->
 <div class="modal fade" id="addModal" tabindex="-1">
     <div class="modal-dialog">
         <form asp-controller="Productos" asp-action="Agregar" method="post">
@@ -188,29 +184,36 @@
                 <div class="modal-body">
                     
                     <div class="mb-3">
-                        <label>Modelo</label>
-                        <input type="text" class="form-control" asp-for="ProductoMoto.Modelo" required />
+                        <label>Marca</label>
+                        <input type="text" class="form-control" asp-for="ProductoMoto.Marca" maxlength="50" pattern="[a-zA-Z0-9\s\-]+" required />
+                        <span asp-validation-for="ProductoMoto.Marca" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
-                        <label>Marca</label>
-                        <input type="text" class="form-control" asp-for="ProductoMoto.Marca" required />
+                        <label>Modelo</label>
+                        <input type="text" class="form-control" asp-for="ProductoMoto.Modelo" maxlength="50" pattern="[a-zA-Z0-9\s\-]+" required />
+                        <span asp-validation-for="ProductoMoto.Modelo" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label>CC</label>
-                        <input type="text" class="form-control" asp-for="ProductoMoto.CC"  required />
+                        <input type="text" class="form-control" asp-for="ProductoMoto.CC" maxlength="6" pattern="\d{2,6}" inputmode="numeric" required />
+                        <span asp-validation-for="ProductoMoto.CC" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label>Año</label>
-                        <input type="text" class="form-control" asp-for="ProductoMoto.Anio" required />
+                        <input type="text" class="form-control" asp-for="ProductoMoto.Anio" maxlength="4" pattern="\d{4}" inputmode="numeric" required />
+                        <span asp-validation-for="ProductoMoto.Anio" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label>Color</label>
-                        <input type="text" class="form-control" asp-for="ProductoMoto.Color"  required />
+                        <input type="text" class="form-control" asp-for="ProductoMoto.Color" maxlength="30" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required />
+                        <span asp-validation-for="ProductoMoto.Color" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label>Precio</label>
-                        <input type="number" class="form-control" asp-for="ProductoMoto.Precio" step="0.01" min="0.00" max="999999.99" required />
+                        <input type="number" class="form-control" asp-for="ProductoMoto.Precio" step="0.01" min="0.01" max="999999.99" required />
+                        <span asp-validation-for="ProductoMoto.Precio" class="text-danger"></span>
                     </div>
+
                     <div class="mb-3">
                         <label>Proveedor</label>
                         <select class="form-select" asp-for="ProductoMoto.ProveedorId" asp-items="@(new SelectList(Model.Proveedores, "Id", "Nombre"))" required>
@@ -227,3 +230,6 @@
         </form>
     </div>
 </div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

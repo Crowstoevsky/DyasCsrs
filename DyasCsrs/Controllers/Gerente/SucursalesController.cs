@@ -37,7 +37,8 @@ namespace DyasCsrs.Controllers.Gerente
             Sucursal nuevaSucursal = new Sucursal
             {
                 Nombre = model.Sucursal.Nombre,
-                Ubicacion = model.Sucursal.Ubicacion
+                Ubicacion = model.Sucursal.Ubicacion,
+                Activo = true 
             };
 
             await _appDbcontext.Sucursales.AddAsync(nuevaSucursal);
