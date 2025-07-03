@@ -27,7 +27,7 @@ namespace DyasCsrs.Models
         public string Telefono { get; set; }
 
         [ForeignKey("RolId")]
-        public int RolId { get; set; }
+        public int? RolId { get; set; }
         public virtual Rol Rol { get; set; }
 
         public ICollection<Venta> Ventas { get; set; }

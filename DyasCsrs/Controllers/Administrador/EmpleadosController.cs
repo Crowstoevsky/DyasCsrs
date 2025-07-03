@@ -35,13 +35,41 @@ namespace DyasCsrs.Controllers.Administrador
         [HttpPost]
         public async Task<IActionResult> Agregar(EmpleadoCrudVM model)
         {
-            Empleado nuevoEmpleado = new Empleado
+            var emailExiste = await _appDbcontext.Empleados
+                .AnyAsync(e => e.Email == model.Empleado.Email);
+
+            var rolExiste = await _appDbcontext.Roles
+                .AnyAsync(r => r.Id == model.Empleado.RolId);
+
+            // Validaciones personalizadas
+            if (emailExiste || !rolExiste)
+            {
+                if (emailExiste)
+                {
+                    ModelState.AddModelError("Empleado.Email", "El correo ya está en uso.");
+                }
+
+                if (!rolExiste)
+                {
+                    ModelState.AddModelError("Empleado.RolId", "Debe seleccionar un rol válido.");
+                }
+
+                // Recargar listas necesarias para la vista
+                model.Empleados = await _appDbcontext.Empleados.Include(e => e.Rol).ToListAsync();
+                model.Roles = await _appDbcontext.Roles.ToListAsync();
+
+                model.EmpleadoId = 0; // Para mostrar modal de agregar
+                return View("Index", model);
+            }
+
+            // Guardar si todo está bien
+            var nuevoEmpleado = new Empleado
             {
                 Nombre = model.Empleado.Nombre,
                 Email = model.Empleado.Email,
-                Password = model.Empleado.Password,
                 Telefono = model.Empleado.Telefono,
-                RolId = model.Empleado.RolId // Asignación directa por Id
+                Password = model.Empleado.Password,
+                RolId = model.Empleado.RolId
             };
 
             await _appDbcontext.Empleados.AddAsync(nuevoEmpleado);
@@ -50,10 +78,20 @@ namespace DyasCsrs.Controllers.Administrador
             return RedirectToAction(nameof(Index));
         }
 
+
         [HttpPost]
         public async Task<IActionResult> Editar(EmpleadoCrudVM model)
         {
+            bool emailExiste = await _appDbcontext.Empleados
+                .AnyAsync(e => e.Email == model.Empleado.Email && e.Id != model.EmpleadoId);
 
+            if (emailExiste)
+            {
+                ModelState.AddModelError("Empleado.Email", $"El email '{model.Empleado.Email}' ya existe.");
+                model.Empleados = await _appDbcontext.Empleados.Include(e => e.Rol).ToListAsync();
+                model.Roles = await _appDbcontext.Roles.ToListAsync();
+                return View("Index", model);
+            }
 
             var empleadoExistente = await _appDbcontext.Empleados.FindAsync(model.EmpleadoId);
             if (empleadoExistente == null)
@@ -61,14 +99,17 @@ namespace DyasCsrs.Controllers.Administrador
 
             empleadoExistente.Nombre = model.Empleado.Nombre;
             empleadoExistente.Email = model.Empleado.Email;
-            empleadoExistente.Password = model.Empleado.Password;
             empleadoExistente.Telefono = model.Empleado.Telefono;
+            empleadoExistente.Password = model.Empleado.Password;
             empleadoExistente.RolId = model.Empleado.RolId;
 
             await _appDbcontext.SaveChangesAsync();
-
             return RedirectToAction(nameof(Index));
         }
+
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> Eliminar(int idEmpleado)
