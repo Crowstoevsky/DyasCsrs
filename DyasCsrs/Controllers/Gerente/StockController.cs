@@ -3,6 +3,7 @@ using DyasCsrs.Models;
 using DyasCsrs.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DyasCsrs.Controllers.Gerente
 {
@@ -23,10 +24,20 @@ namespace DyasCsrs.Controllers.Gerente
         {
             var vm = new StockCrudVM
             {
-                Stocks = _appDbcontext.StockSucursales.ToList(),
+                Stocks = _appDbcontext.StockSucursales
+                    .Include(s => s.ProductoMoto)
+                    .Include(s => s.Sucursal)
+                    .ToList(),
+
                 Stock = new StockSucursal(),
-                ProductosMotos = _appDbcontext.ProductoMotos.ToList(),
-                Sucursales = _appDbcontext.Sucursales.ToList(),
+                ProductosMotos = _appDbcontext.ProductoMotos
+                    .Where(pm => pm.EstadoPMId == 1) // solo productos activos
+                    .ToList(),
+
+                Sucursales = _appDbcontext.Sucursales
+                    .Where(s => s.Activo)
+                    .ToList(),
+
             };
 
             return View(vm);
@@ -54,7 +65,6 @@ namespace DyasCsrs.Controllers.Gerente
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
         [HttpPost]
         public async Task<IActionResult> Editar(StockCrudVM model)
         {

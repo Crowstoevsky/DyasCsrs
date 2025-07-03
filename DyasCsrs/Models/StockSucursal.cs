@@ -10,7 +10,7 @@ namespace DyasCsrs.Models
         public ProductoMoto ProductoMoto { get; set; }
         public int ProductoMotoId { get; set; }
         public Sucursal Sucursal { get; set; }
-        public int SucursalId { get; set; }
+        public int? SucursalId { get; set; }
         [Range(1, int.MaxValue, ErrorMessage = "La cantidad debe ser mayor a 0.")]
         public int Cantidad { get; set; }
         public ICollection<DetallesVenta> DetallesVentas { get; set; }

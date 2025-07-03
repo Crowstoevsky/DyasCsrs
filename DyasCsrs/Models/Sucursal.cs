@@ -11,6 +11,7 @@ namespace DyasCsrs.Models
         public string Nombre { get; set; }
         [Required, StringLength(100)]
         public string Ubicacion { get; set; }
+        public bool Activo { get; set; } = true;
         public ICollection<StockSucursal> Stocks { get; set; }
     }
 }

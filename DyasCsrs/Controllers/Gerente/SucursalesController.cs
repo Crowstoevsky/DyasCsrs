@@ -3,6 +3,7 @@ using DyasCsrs.Models;
 using DyasCsrs.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DyasCsrs.Controllers.Gerente
 {
@@ -67,13 +68,26 @@ namespace DyasCsrs.Controllers.Gerente
         public async Task<IActionResult> Eliminar(int idSucursal)
         {
             var sucursal = await _appDbcontext.Sucursales.FindAsync(idSucursal);
-            if (sucursal != null)
-            {
-                _appDbcontext.Sucursales.Remove(sucursal);
-                await _appDbcontext.SaveChangesAsync();
-            }
+            if (sucursal == null) return RedirectToAction(nameof(Index));
+
+            sucursal.Activo = false;
+            await _appDbcontext.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Activar(int idSucursal)
+        {
+            var sucursal = await _appDbcontext.Sucursales.FindAsync(idSucursal);
+            if (sucursal != null && !sucursal.Activo)
+            {
+                sucursal.Activo = true;
+                await _appDbcontext.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index");
+        }
+
     }
 }

@@ -84,11 +84,23 @@ namespace DyasCsrs.Controllers.Gerente
             var productoMoto = await _appDbcontext.ProductoMotos.FindAsync(idProductoMoto);
             if (productoMoto != null)
             {
-                _appDbcontext.ProductoMotos.Remove(productoMoto);
+                productoMoto.EstadoPMId = 2; // Inactivo
                 await _appDbcontext.SaveChangesAsync();
             }
 
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost]
+        public async Task<IActionResult> Activar(int idProductoMoto)
+        {
+            var producto = await _appDbcontext.ProductoMotos.FindAsync(idProductoMoto);
+            if (producto != null && producto.EstadoPMId == 2) // solo si estaba inactivo
+            {
+                producto.EstadoPMId = 1; // Activo
+                await _appDbcontext.SaveChangesAsync();
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 }
