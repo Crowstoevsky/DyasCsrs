@@ -133,7 +133,7 @@ else if (Model.Cliente?.Id > 0)
         {
             <input type="hidden" name="Detalles[@i].ProductoMoto.Id" value="@Model.Detalles[i].ProductoMoto.Id" />
             <input type="hidden" name="Detalles[@i].Cantidad" value="@Model.Detalles[i].Cantidad" />
-            <input type="hidden" name="Detalles[@i].StockSucursalId" value="@Model.Detalles[i].StockSucursalId" /> <!-- ✅ ESTA LÍNEA ES CLAVE -->
+            <input type="hidden" name="Detalles[@i].StockSucursalId" value="@Model.Detalles[i].StockSucursalId" />
         }
         <div class="input-button-card">
             <select asp-for="MetodoPagoId" asp-items="@(new SelectList(Model.MetodosPago, "Id", "Nombre"))" class="form-select" required></select>
