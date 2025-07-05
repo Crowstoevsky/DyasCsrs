@@ -155,7 +155,7 @@ namespace DyasCsrs.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("RolId")
+                    b.Property<int?>("RolId")
                         .HasColumnType("int");
 
                     b.Property<string>("Telefono")
@@ -185,7 +185,7 @@ namespace DyasCsrs.Migrations
                             Email = "gerente@store.com",
                             Nombre = "Gerente",
                             Password = "gerente123",
-                            RolId = 3,
+                            RolId = 2,
                             Telefono = "987654321"
                         },
                         new
@@ -194,7 +194,7 @@ namespace DyasCsrs.Migrations
                             Email = "vendedor@store.com",
                             Nombre = "Vendedor Default",
                             Password = "vendedor123",
-                            RolId = 2,
+                            RolId = 3,
                             Telefono = "987654321"
                         });
                 });
@@ -274,7 +274,8 @@ namespace DyasCsrs.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -422,8 +423,7 @@ namespace DyasCsrs.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -432,8 +432,7 @@ namespace DyasCsrs.Migrations
 
                     b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasMaxLength(9)
-                        .HasColumnType("nvarchar(9)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -562,14 +561,14 @@ namespace DyasCsrs.Migrations
                         new
                         {
                             Id = 1,
-                            Activo = true,
+                            Activo = false,
                             Nombre = "Sucursal Lima",
                             Ubicacion = "Av. Siempre Viva 123"
                         },
                         new
                         {
                             Id = 2,
-                            Activo = true,
+                            Activo = false,
                             Nombre = "Sucursal Arequipa",
                             Ubicacion = "Av. Los Olivos 456"
                         });
@@ -659,10 +658,8 @@ namespace DyasCsrs.Migrations
             modelBuilder.Entity("DyasCsrs.Models.Empleado", b =>
                 {
                     b.HasOne("DyasCsrs.Models.Rol", "Rol")
-                        .WithMany("Empleados")
-                        .HasForeignKey("RolId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("RolId");
 
                     b.Navigation("Rol");
                 });
@@ -737,7 +734,7 @@ namespace DyasCsrs.Migrations
                         .IsRequired();
 
                     b.HasOne("DyasCsrs.Models.MetodoPago", "MetodoPago")
-                        .WithMany("Ventas")
+                        .WithMany()
                         .HasForeignKey("MetodoPagoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -769,11 +766,6 @@ namespace DyasCsrs.Migrations
                     b.Navigation("ProductosMoto");
                 });
 
-            modelBuilder.Entity("DyasCsrs.Models.MetodoPago", b =>
-                {
-                    b.Navigation("Ventas");
-                });
-
             modelBuilder.Entity("DyasCsrs.Models.ProductoMoto", b =>
                 {
                     b.Navigation("DetallesVentas");
@@ -784,11 +776,6 @@ namespace DyasCsrs.Migrations
             modelBuilder.Entity("DyasCsrs.Models.Proveedor", b =>
                 {
                     b.Navigation("Productos");
-                });
-
-            modelBuilder.Entity("DyasCsrs.Models.Rol", b =>
-                {
-                    b.Navigation("Empleados");
                 });
 
             modelBuilder.Entity("DyasCsrs.Models.StockSucursal", b =>

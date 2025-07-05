@@ -37,7 +37,12 @@ namespace DyasCsrs.Data
                 .HasOne(d => d.StockSucursal)
                 .WithMany(s => s.DetallesVentas)
                 .HasForeignKey(d => d.StockSucursalId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Empleado>()
+                .HasOne(e => e.Rol)
+                .WithMany()
+                .HasForeignKey(e => e.RolId)
+                .OnDelete(DeleteBehavior.SetNull); 
             // Roles
             modelBuilder.Entity<Rol>().HasData(
                 new Rol { Id = 1, Nombre = "Administrador" },

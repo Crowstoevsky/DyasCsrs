@@ -42,7 +42,7 @@
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label>Nombre</label>
-                                        <input type="text" class="form-control" name="Nombre" value="@item.Nombre"
+                                        <input type="text" class="form-control" asp-for="Rol.Nombre" value="@item.Nombre"
                                                maxlength="50" minlength="3"
                                                pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required />
                                         <span asp-validation-for="Rol.Nombre" class="text-danger"></span>

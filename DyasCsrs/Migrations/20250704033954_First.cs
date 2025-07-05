@@ -61,7 +61,7 @@ namespace DyasCsrs.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,8 +75,8 @@ namespace DyasCsrs.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Telefono = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Telefono = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -153,7 +153,7 @@ namespace DyasCsrs.Migrations
                     Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Telefono = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
-                    RolId = table.Column<int>(type: "int", nullable: false)
+                    RolId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -162,8 +162,7 @@ namespace DyasCsrs.Migrations
                         name: "FK_Empleados_Roles_RolId",
                         column: x => x.RolId,
                         principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -348,8 +347,8 @@ namespace DyasCsrs.Migrations
                 columns: new[] { "Id", "Activo", "Nombre", "Ubicacion" },
                 values: new object[,]
                 {
-                    { 1, true, "Sucursal Lima", "Av. Siempre Viva 123" },
-                    { 2, true, "Sucursal Arequipa", "Av. Los Olivos 456" }
+                    { 1, false, "Sucursal Lima", "Av. Siempre Viva 123" },
+                    { 2, false, "Sucursal Arequipa", "Av. Los Olivos 456" }
                 });
 
             migrationBuilder.InsertData(
@@ -358,8 +357,8 @@ namespace DyasCsrs.Migrations
                 values: new object[,]
                 {
                     { 1, "admin@store.com", "Administrador", "admin123", 1, "987654321" },
-                    { 2, "gerente@store.com", "Gerente", "gerente123", 3, "987654321" },
-                    { 3, "vendedor@store.com", "Vendedor Default", "vendedor123", 2, "987654321" }
+                    { 2, "gerente@store.com", "Gerente", "gerente123", 2, "987654321" },
+                    { 3, "vendedor@store.com", "Vendedor Default", "vendedor123", 3, "987654321" }
                 });
 
             migrationBuilder.InsertData(

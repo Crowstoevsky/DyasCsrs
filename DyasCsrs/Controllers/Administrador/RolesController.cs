@@ -24,7 +24,7 @@ namespace DyasCsrs.Controllers.Administrador
             var vm = new RolCrudVM
             {
                 Roles = _appDbcontext.Roles.ToList(),
-                Rol = new Rol() // vacío para formulario
+                Rol = new Rol() 
             };
 
             return View(vm);
@@ -66,12 +66,22 @@ namespace DyasCsrs.Controllers.Administrador
             var rol = await _appDbcontext.Roles.FindAsync(idRol);
             if (rol != null)
             {
+                var empleadosConRol = _appDbcontext.Empleados
+                    .Where(e => e.RolId == idRol)
+                    .ToList();
+
+                foreach (var empleado in empleadosConRol)
+                {
+                    empleado.RolId = null;
+                }
+
                 _appDbcontext.Roles.Remove(rol);
                 await _appDbcontext.SaveChangesAsync();
             }
 
             return RedirectToAction(nameof(Index));
         }
+
 
     }
 }
