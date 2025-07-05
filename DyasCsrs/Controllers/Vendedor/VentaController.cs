@@ -23,7 +23,11 @@ namespace DyasCsrs.Controllers
             var vm = new VentaVM
             {
                 StockDisponible = await _context.StockSucursales
-                    .Where(s => s.Cantidad > 0) 
+                    .Where(s =>
+                        s.Cantidad > 0 &&
+                        s.ProductoMoto.EstadoPMId == 1 && // producto activo
+                        s.Sucursal.Activo                // sucursal activa
+                    )
                     .Include(s => s.ProductoMoto)
                     .Include(s => s.Sucursal)
                     .ToListAsync(),
@@ -44,7 +48,11 @@ namespace DyasCsrs.Controllers
             Console.WriteLine($"--- Acción recibida: {accion}");
 
             vm.StockDisponible = await _context.StockSucursales
-                .Where(s => s.Cantidad > 0)
+                .Where(s =>
+                    s.Cantidad > 0 &&
+                    s.ProductoMoto.EstadoPMId == 1 && // producto activo
+                    s.Sucursal.Activo                // sucursal activa
+                )
                 .Include(s => s.ProductoMoto)
                 .Include(s => s.Sucursal)
                 .ToListAsync();
