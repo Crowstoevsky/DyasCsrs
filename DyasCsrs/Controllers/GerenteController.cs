@@ -28,7 +28,7 @@ namespace DyasCsrs.Controllers
 
             // Gráfico: Ventas por mes
             var ventas = _context.Ventas
-                .AsEnumerable() // Necesario por usar DateOnly
+                .AsEnumerable() 
                 .GroupBy(v => new { v.Fecha.Year, v.Fecha.Month })
                 .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month)
                 .Select(g => new

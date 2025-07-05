@@ -37,7 +37,6 @@
                 <div class="modal fade" id="editModal_@empleado.Id" tabindex="-1">
                     <div class="modal-dialog">
                         <form asp-controller="Empleados" asp-action="Editar" method="post">
-                            <!-- ID oculto para identificar el empleado -->
                             <input type="hidden" name="EmpleadoId" value="@empleado.Id" />
 
                             <div class="modal-content">

@@ -20,8 +20,6 @@
                 <th>Precio</th>
                 <th>Proveedor</th>
                 <th>Acciones</th>
-
-
             </tr>
         </thead>
         <tbody>
@@ -38,17 +36,16 @@
                     <td>@moto.Color</td>
                     <td>@moto.Precio</td>
                     <td>@moto.Proveedor.Nombre</td>
-
-                    <td>
-                        <button class="btn btn-yellow btn-sm"
-                                data-bs-toggle="modal"
-                                data-bs-target="#editModal_@moto.Id"
-                        @(esInactivo ? "disabled" : "")>
-                            Editar
-                        </button>
+                    <td> 
 
                         @if (!esInactivo)
                         {
+                            <button class="btn btn-yellow btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editModal_@moto.Id"
+                            @(esInactivo ? "disabled" : "")>
+                                Editar
+                            </button>
                             <button class="btn btn-red btn-sm"
                                     data-bs-toggle="modal"
                                     data-bs-target="#deleteModal_@moto.Id">

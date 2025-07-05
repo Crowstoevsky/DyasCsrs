@@ -16,15 +16,13 @@ namespace DyasCsrs.Controllers.Administrador
             _appDbcontext = context;
         }
 
-
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var vm = new MetodosPagoCrudVM
             {
                 MetodosPago = _appDbcontext.MetodosPago.ToList(),
-                MetodoPago = new MetodoPago() // vacío para formulario
+                MetodoPago = new MetodoPago() 
             };
             
             return View(vm);
@@ -47,7 +45,6 @@ namespace DyasCsrs.Controllers.Administrador
         [HttpPost]
         public async Task<IActionResult> Editar(MetodosPagoCrudVM model)
         {
-
 
             var metodoExistente = await _appDbcontext.MetodosPago.FindAsync(model.MetodoPagoId);
             if (metodoExistente == null)

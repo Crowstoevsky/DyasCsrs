@@ -18,7 +18,7 @@ namespace DyasCsrs.Controllers
         {
             ViewBag.TotalEmpleados = await _context.Empleados.CountAsync();
 
-            // Ventas del mes actual (usando DateOnly)
+            // Ventas del mes actual
             var hoy = DateOnly.FromDateTime(DateTime.Today);
             ViewBag.VentasMes = await _context.Ventas
                 .Where(v => v.Fecha.Month == hoy.Month && v.Fecha.Year == hoy.Year)
@@ -26,9 +26,9 @@ namespace DyasCsrs.Controllers
 
             ViewBag.TotalDevoluciones = await _context.OpcionesDevolucion.CountAsync();
 
-            // Ventas agrupadas por mes (DateOnly requiere AsEnumerable para usar Month/Year)
+            // Ventas agrupadas por mes 
             var ventas = _context.Ventas
-                .AsEnumerable() // Traer todo a memoria para usar DateOnly
+                .AsEnumerable() 
                 .GroupBy(v => new { v.Fecha.Year, v.Fecha.Month })
                 .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month)
                 .Select(g => new
@@ -59,8 +59,5 @@ namespace DyasCsrs.Controllers
 
             return View();
         }
-
-
-
     }
 }

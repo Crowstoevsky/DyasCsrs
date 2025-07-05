@@ -16,8 +16,6 @@ namespace DyasCsrs.Controllers.Gerente
             _appDbcontext = context;
         }
 
-
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -49,7 +47,6 @@ namespace DyasCsrs.Controllers.Gerente
         [HttpPost]
         public async Task<IActionResult> Editar(ProveedoresCrudVM model)
         {
-
 
             var proveedorExistente = await _appDbcontext.Proveedores.FindAsync(model.ProveedorId);
             if (proveedorExistente == null)

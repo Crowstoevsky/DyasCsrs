@@ -16,8 +16,6 @@ namespace DyasCsrs.Controllers.Gerente
             _appDbcontext = context;
         }
 
-
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {

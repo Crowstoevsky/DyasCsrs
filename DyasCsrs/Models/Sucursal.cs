@@ -17,9 +17,7 @@ namespace DyasCsrs.Models
         [StringLength(100, MinimumLength = 5, ErrorMessage = "La ubicación debe tener entre 5 y 100 caracteres")]
         [RegularExpression(@"^[\w\s\-,.#áéíóúÁÉÍÓÚñÑ]+$", ErrorMessage = "Ubicación inválida: usa letras, números, espacios y símbolos básicos")]
         public string Ubicacion { get; set; }
-
         public bool Activo { get; set; }
-
         public ICollection<StockSucursal> Stocks { get; set; }
     }
 }

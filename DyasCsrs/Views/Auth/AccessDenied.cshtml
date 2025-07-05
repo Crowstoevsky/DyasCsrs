@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Acceso Denegado";
+    Layout = "~/Views/Shared/_Layout.cshtml"; 
+}
+<style>
+    :root {
+        --color-blue: #80b7e0;
+        --color-yellow: #edd84c;
+        --color-red: #e57373;
+        --btn-radius: 0.5rem;
+        --btn-padding: 0.5rem 1.2rem;
+        --btn-primary-bg: #aad69f;
+        --btn-secondary-bg: #212121;
+        --btn-yellow-bg: #f3e9b4;
+        --btn-green-bg: #8fc1a9;
+        --btn-primary-hover: #9acb8f;
+        --btn-secondary-hover: #333333;
+        --btn-yellow-hover: #ede29f;
+        --btn-green-hover: #79b194;
+        --btn-red-hover: #cf5c5c;
+        --text-dark: #212121;
+        --text-light: #ffffff;
+    }
+
+    .access-denied-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 70vh;
+        text-align: center;
+        color: var(--text-dark);
+        padding: 2rem;
+    }
+
+    .access-icon {
+        font-size: 4rem;
+        color: var(--color-red);
+        margin-bottom: 1rem;
+    }
+
+    .access-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .access-message {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        color: #555;
+    }
+
+    .btn-back {
+        background-color: var(--btn-primary-bg);
+        color: var(--text-light);
+        padding: var(--btn-padding);
+        border-radius: var(--btn-radius);
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+
+        .btn-back:hover {
+            background-color: var(--btn-primary-hover);
+            color:white;
+        }
+</style>
+
+<div class="access-denied-container">
+    <div class="access-icon">
+        <i class="fas fa-ban"></i>
+    </div>
+    <h1 class="access-title">Acceso Denegado</h1>
+    <p class="access-message">
+        No tienes permiso para acceder a esta sección de la aplicación.
+    </p>
+    <a class="btn-back" href="~/">Volver al inicio</a>
+</div>

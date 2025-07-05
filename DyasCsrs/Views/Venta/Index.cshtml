@@ -16,7 +16,8 @@
         <button type="submit" class="btn btn-primary mt-2">Buscar</button>
     </div>
 </form>
-
+@* // Si el DNI del cliente no está vacío y su ID es 0, significa que se buscó un cliente con un DNI,
+// pero no se encontró en la base de datos. Por eso se muestra un formulario para registrar uno nuevo. *@
 @if (!string.IsNullOrEmpty(Model.Cliente?.DNI) && Model.Cliente.Id == 0)
 {
     <div class="card p-3">
@@ -41,6 +42,7 @@
         </form>
     </div>
 }
+// Si el cliente existe (Id > 0), mostramos los detalles del cliente y el formulario para agregar productos
 else if (Model.Cliente?.Id > 0)
 {
     <h4>Cliente: @Model.Cliente.Nombre</h4>
@@ -75,17 +77,10 @@ else if (Model.Cliente?.Id > 0)
                     </option>
                 }
             </select>
-
-
             <label>Cantidad:</label>
             <input asp-for="DetallesTempCantidad" type="number" min="1" value="1" class="form-control" />
             <span asp-validation-for="DetallesTempCantidad" class="text-danger"></span>
-
-            
-
-
         </div>
-
         <button type="submit" class="btn btn-primary mt-2">Agregar Detalle</button>
         @if (ViewData["ErrorStock"] != null)
         {

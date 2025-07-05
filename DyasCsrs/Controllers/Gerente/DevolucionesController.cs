@@ -44,7 +44,6 @@ namespace DyasCsrs.Controllers.Gerente
                 .ToList()
             };
 
-
             return View(vm);
         }
 
@@ -73,7 +72,6 @@ namespace DyasCsrs.Controllers.Gerente
                     var productoId = detalle.ProductoMotoID;
                     var stockSucursalId = detalle.StockSucursalId;
 
-                    // Validación básica
                     if (stockSucursalId <= 0)
                         continue;
 
@@ -91,7 +89,6 @@ namespace DyasCsrs.Controllers.Gerente
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Rechazar(int id)

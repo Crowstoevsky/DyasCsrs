@@ -17,8 +17,6 @@ namespace DyasCsrs.Controllers.Gerente
             _appDbcontext = context;
         }
 
-
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -51,14 +49,12 @@ namespace DyasCsrs.Controllers.Gerente
         public async Task<IActionResult> Editar(SucursalesCrudVM model)
         {
 
-
             var sucursalExistente = await _appDbcontext.Sucursales.FindAsync(model.SucursalId);
             if (sucursalExistente == null)
                 return RedirectToAction(nameof(Index));
 
             sucursalExistente.Nombre = model.Sucursal.Nombre;
             sucursalExistente.Ubicacion = model.Sucursal.Ubicacion;
-
 
             await _appDbcontext.SaveChangesAsync();
 
@@ -89,6 +85,5 @@ namespace DyasCsrs.Controllers.Gerente
 
             return RedirectToAction("Index");
         }
-
     }
 }

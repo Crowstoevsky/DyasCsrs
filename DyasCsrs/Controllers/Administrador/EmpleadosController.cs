@@ -18,8 +18,6 @@ namespace DyasCsrs.Controllers.Administrador
             _appDbcontext = context;
         }
 
-
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -27,7 +25,7 @@ namespace DyasCsrs.Controllers.Administrador
             {
                 Empleados = await _appDbcontext.Empleados.Include(e => e.Rol).ToListAsync(),
                 Roles = await _appDbcontext.Roles.ToListAsync(),
-                Empleado = new Empleado() // vacío para formulario
+                Empleado = new Empleado() 
             };
             return View(empleadoCrud);
         }
@@ -41,7 +39,6 @@ namespace DyasCsrs.Controllers.Administrador
             var rolExiste = await _appDbcontext.Roles
                 .AnyAsync(r => r.Id == model.Empleado.RolId);
 
-            // Validaciones personalizadas
             if (emailExiste || !rolExiste)
             {
                 if (emailExiste)
@@ -54,15 +51,13 @@ namespace DyasCsrs.Controllers.Administrador
                     ModelState.AddModelError("Empleado.RolId", "Debe seleccionar un rol válido.");
                 }
 
-                // Recargar listas necesarias para la vista
                 model.Empleados = await _appDbcontext.Empleados.Include(e => e.Rol).ToListAsync();
                 model.Roles = await _appDbcontext.Roles.ToListAsync();
 
-                model.EmpleadoId = 0; // Para mostrar modal de agregar
+                model.EmpleadoId = 0; 
                 return View("Index", model);
             }
 
-            // Guardar si todo está bien
             var nuevoEmpleado = new Empleado
             {
                 Nombre = model.Empleado.Nombre,
@@ -77,7 +72,6 @@ namespace DyasCsrs.Controllers.Administrador
 
             return RedirectToAction(nameof(Index));
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Editar(EmpleadoCrudVM model)
@@ -108,9 +102,6 @@ namespace DyasCsrs.Controllers.Administrador
         }
 
 
-
-
-
         [HttpPost]
         public async Task<IActionResult> Eliminar(int idEmpleado)
         {
@@ -120,7 +111,6 @@ namespace DyasCsrs.Controllers.Administrador
                 _appDbcontext.Empleados.Remove(empleado);
                 await _appDbcontext.SaveChangesAsync();
             }
-
             return RedirectToAction(nameof(Index));
         }
 

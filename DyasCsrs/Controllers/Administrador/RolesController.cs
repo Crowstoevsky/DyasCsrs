@@ -16,8 +16,6 @@ namespace DyasCsrs.Controllers.Administrador
             _appDbcontext = context;
         }
 
-
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -81,7 +79,5 @@ namespace DyasCsrs.Controllers.Administrador
 
             return RedirectToAction(nameof(Index));
         }
-
-
     }
 }

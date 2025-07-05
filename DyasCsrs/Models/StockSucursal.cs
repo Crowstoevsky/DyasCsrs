@@ -13,7 +13,7 @@ namespace DyasCsrs.Models
         public int? SucursalId { get; set; }
         [Range(1, int.MaxValue, ErrorMessage = "La cantidad debe ser mayor a 0.")]
         public int Cantidad { get; set; }
-        public bool Disponible => ProductoMoto?.EstadoPMId == 1 && Sucursal?.Activo == true;
+        public bool Disponible => ProductoMoto?.EstadoPMId == 1 && Sucursal?.Activo == true; // solo si el producto está activo y la sucursal está activa
 
         public ICollection<DetallesVenta> DetallesVentas { get; set; }
     }

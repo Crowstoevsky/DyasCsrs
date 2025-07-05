@@ -36,7 +36,7 @@ namespace DyasCsrs.Controllers
 
             var ventas = await _context.Ventas
                 .Include(v => v.Detalles).ThenInclude(d => d.ProductoMoto)
-                .Include(v => v.OpcionDevolucion) // Necesario para filtrar
+                .Include(v => v.OpcionDevolucion) 
                 .Where(v => v.ClienteId == cliente.Id && v.OpcionDevolucion == null)
                 .ToListAsync();
 
@@ -45,7 +45,6 @@ namespace DyasCsrs.Controllers
 
             return View("Index", vm);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> SolicitarDevolucion(DevolucionVM vm)
