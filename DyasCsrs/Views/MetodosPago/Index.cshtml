@@ -19,69 +19,108 @@
         <tbody>
             @foreach (var item in Model.MetodosPago)
             {
-                <tr>
+                var rowClass = item.Activo ? "" : "text-muted";
+
+                <tr class="@rowClass">
                     <td>@item.Id</td>
                     <td>@item.Nombre</td>
-                    
                     <td>
-                        <button class="btn btn-yellow btn-sm" data-bs-toggle="modal" data-bs-target="#editModal_@item.Id">Editar</button>
-                        <button class="btn btn-red btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal_@item.Id">Eliminar</button>
+                        @if (item.Activo)
+                        {
+                            <button class="btn btn-yellow btn-sm" data-bs-toggle="modal" data-bs-target="#editModal_@item.Id">Editar</button>
+                            <button class="btn btn-red btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal_@item.Id">Eliminar</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#activateModal_@item.Id">
+                                Activar
+                            </button>
+                        }
                     </td>
                 </tr>
 
-                <!-- Modal Editar -->
-                <div class="modal fade" id="editModal_@item.Id" tabindex="-1">
-                    <div class="modal-dialog">
-                        <form asp-action="Editar" method="post">
-                            <input type="hidden" asp-for="MetodoPagoId"  value="@item.Id" />
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Editar Empleado</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label>Nombre</label>
-                                        <input type="text" class="form-control" name="Nombre" value="@item.Nombre"
-                                               maxlength="50" minlength="3"
-                                               pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required />
-                                        <span asp-validation-for="MetodoPago.Nombre" class="text-danger"></span>
+                @if (!item.Activo)
+                {
+                    <div class="modal fade" id="activateModal_@item.Id" tabindex="-1">
+                        <div class="modal-dialog">
+                            <form asp-action="Activar" method="post">
+                                <input type="hidden" name="idMetodoPago" value="@item.Id" />
+                                <div class="modal-content">
+                                    <div class="modal-header bg-success text-white">
+                                        <h5 class="modal-title">Activar Método de Pago</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
-                                    
+                                    <div class="modal-body">
+                                        ¿Deseas volver a activar el método de pago <strong>@item.Nombre</strong>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Activar</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Guardar</button>
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                </div>
-                            </div>
-                        </form>
-
+                            </form>
+                        </div>
                     </div>
-                </div>
+                }
 
-                <!-- Modal Eliminar -->
-                <div class="modal fade" id="deleteModal_@item.Id" tabindex="-1">
-                    <div class="modal-dialog">
-                        <form asp-action="Eliminar" method="post">
-                            <input type="hidden" name="idMetodoPago"  value="@item.Id" />
+                @if (item.Activo)
+                {
 
-                            <div class="modal-content">
-                                <div class="modal-header bg-danger text-white">
-                                    <h5 class="modal-title">Eliminar Empleado</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <!-- Modal Editar -->
+                    <div class="modal fade" id="editModal_@item.Id" tabindex="-1">
+                        <div class="modal-dialog">
+                            <form asp-action="Editar" method="post">
+                                <input type="hidden" asp-for="MetodoPagoId" value="@item.Id" />
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Editar Método de Pago</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label>Nombre</label>
+                                            <input type="text" class="form-control" asp-for="MetodoPago.Nombre" value="@item.Nombre"
+                                                   maxlength="50" minlength="3"
+                                                   pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" required />
+                                            <span asp-validation-for="MetodoPago.Nombre" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    </div>
                                 </div>
-                                <div class="modal-body">
-                                    ¿Estás seguro de que deseas eliminar el método de pago <strong>@item.Nombre</strong>?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
-                </div>
+
+                    <!-- Modal Eliminar (Soft Delete) -->
+                    <div class="modal fade" id="deleteModal_@item.Id" tabindex="-1">
+                        <div class="modal-dialog">
+                            <form asp-action="Eliminar" method="post">
+                                <input type="hidden" name="idMetodoPago" value="@item.Id" />
+                                <div class="modal-content">
+                                    <div class="modal-header bg-danger text-white">
+                                        <h5 class="modal-title">Eliminar Método de Pago</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Estás seguro de que deseas desactivar el método de pago <strong>@item.Nombre</strong>?
+                                        <br /><small class="text-muted">Esta acción puede deshacerse activándolo nuevamente.</small>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-danger">Desactivar</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                }
             }
+
         </tbody>
     </table>
 </div>

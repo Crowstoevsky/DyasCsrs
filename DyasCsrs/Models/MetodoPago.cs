@@ -11,6 +11,8 @@ namespace DyasCsrs.Models
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Debe tener entre 3 y 50 caracteres")]
         [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", ErrorMessage = "Solo se permiten letras")]
         public string Nombre { get; set; }
+        public bool Activo { get; set; } = true;
+
     }
 
 }

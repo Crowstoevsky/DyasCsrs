@@ -66,7 +66,20 @@ namespace DyasCsrs.Controllers.Administrador
             var metodoPago = await _appDbcontext.MetodosPago.FindAsync(idMetodoPago);
             if (metodoPago != null)
             {
-                _appDbcontext.MetodosPago.Remove(metodoPago);
+                metodoPago.Activo = false;
+                await _appDbcontext.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Activar(int idMetodoPago)
+        {
+            var metodoPago = await _appDbcontext.MetodosPago.FindAsync(idMetodoPago);
+            if (metodoPago != null)
+            {
+                metodoPago.Activo = true;
                 await _appDbcontext.SaveChangesAsync();
             }
 
